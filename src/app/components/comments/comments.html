@@ -1,0 +1,36 @@
+<div class="comments-wrapper">
+  <button class="toggle-btn" (click)='toggleComments()'>
+    {{ isExpanded() ? ' close comments ▲' : ' show comments ▼' }}
+    ({{ allComments().length }})
+  </button>
+
+  @if (isExpanded()) {
+    <div class="comments-section">
+      <ul class="comments-list">
+        @for (comment of allComments(); track comment.id) {
+          <li class="comment-item">
+            <div class="comment-bubble">
+              <p class="comment-text">{{ comment.body }}</p>
+              <small>{{ comment.author_name }} | {{ comment.created_at }}</small>
+            </div>
+          </li>
+        } @empty {
+          <p class="no-comments">there isnt no tasks</p>
+        }
+      </ul>
+
+      <div class="add-comment-box">
+        <input 
+          type="text" 
+          [ngModel]="newCommentContent()" 
+          (ngModelChange)="newCommentContent.set($event)"
+          placeholder="כתוב הערה..." 
+          (keyup.enter)="onAddComment()"
+        />
+        <button (click)="onAddComment()" [disabled]="!newCommentContent().trim()">
+          שלח
+        </button>
+      </div>
+    </div>
+  }
+</div>

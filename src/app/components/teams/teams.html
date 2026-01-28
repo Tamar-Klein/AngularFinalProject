@@ -1,0 +1,39 @@
+@if (!isCreating) {
+
+<h2> My Teams</h2>
+<div class="teams-grid">
+    @for (team of teamsList(); track team.id) {
+    <div class="team-card">
+        <span>Created at: {{team.id}}</span>
+        <span>{{team.created_at}}</span>
+        <h3>{{ team.name }}</h3>
+        <p>Friends in team: {{ team.members_count }}</p>
+        @if (!openedInvites.has(team.id!)) {
+        <button (click)="toggleInvite(team.id!)">Invite</button>
+        }
+        @else {
+        <div>
+            <input #idInput type="text" placeholder="Enter user ID" (input)="0">
+            @if (idInput.value && !isOnlyNumbers(idInput.value)) {
+                <span>Enter a valid user ID</span>
+            }
+            <button (click)="toggleInvite(team.id!)">Cancel</button>
+            <button  (click)="addUser(team.id!, idInput.value)" [disabled]="!idInput.value || !isOnlyNumbers(idInput.value)">Invite</button> 
+           
+        </div>
+        }
+    </div>
+    } @empty {
+    <p>you dont have a team? </p>
+    }
+</div>
+
+<button (click)="toggleCreate()">Create a new team</button>
+}
+@else {
+<h2>Create new Team</h2>
+<input [(ngModel)]="newTeamName" placeholder="Team name">
+<button (click)="saveTeam()">Save</button>
+<button (click)="toggleCreate()">Reset</button>
+
+}

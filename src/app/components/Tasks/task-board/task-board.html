@@ -1,0 +1,66 @@
+<div cdkDropList ... class="tasks-list"></div> 
+
+<div class="board-header">
+  @if (!projectId()) {
+    <h1>Task Board</h1>
+  }
+  <button class="add-btn" (click)="goToCreateTask()">+ New Task</button>
+</div>
+
+<div class="board-container" cdkDropListGroup>
+
+  @for (status of statusOptions; track status) {
+    <div class="board-column">
+      <h2 class="column-title">{{ status }}</h2>
+
+      <div 
+        cdkDropList 
+        [id]="status" 
+        [cdkDropListData]="boardColumns()[status]"
+        (cdkDropListDropped)="drop($event, status)" 
+        class="tasks-list">
+
+        @for (task of boardColumns()[status]; track task.id) {
+          
+          <div class="task-card" cdkDrag [attr.data-priority]="task.priority">
+            
+            <div class="card-header">
+              <div class="dates">
+                 <small>Created: {{ task.created_at | date:'short' }}</small>
+                 <small>Updated: {{ task.updated_at | date:'short' }}</small>
+
+                 </div>
+              <h4>{{ task.title }}</h4>
+              <span class="desc">{{ task.description }}</span>
+            </div>
+
+            <div class="card-body">
+              <div class="priority-area">
+                <label>priority:</label>
+                <select (change)="onUpdatePriority(task.id!, $event)" [value]="task.priority">
+                  @for (priority of priorityOptions; track priority) {
+                    <option [value]="priority" [selected]="priority === task.priority">
+                      {{ priority }}
+                    </option>
+                  }
+                </select>
+              </div>
+              
+              <div class="due-date">Due: {{ task.due_date | date:'shortDate' }}</div>
+
+              <app-comments [taskId]="task.id!"></app-comments>
+            </div>
+
+            <div class="card-footer">
+              <button class="delete-btn" (click)="onDeleteTask(task.id!)">🗑️ מחיקה</button>
+            </div>
+
+            <div *cdkDragPreview class="task-card-preview">
+              {{ task.title }}
+            </div>
+
+          </div>
+        } </div> </div>
+  }
+
+</div>

@@ -1,0 +1,173 @@
+.project-page {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.project-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+
+.description {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+.meta {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: #e0e0e0;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.add-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* לוח המשימות */
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 1rem;
+}
+
+.task-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.task-priority {
+  height: 4px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.task-priority[data-priority="high"] { background: #ff4d4d; }
+.task-priority[data-priority="medium"] { background: #ffcc00; }
+.task-priority[data-priority="low"] { background: #28a745; }
+.board {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  height: 100%;
+}
+
+.column-container {
+  width: 300px;
+  background: #f0f2f5;
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+}
+
+.task-list {
+  min-height: 100px; /* חשוב! כדי שאפשר יהיה לגרור גם לטור ריק */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-box {
+  padding: 15px;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  cursor: grab;
+}
+
+/* אפקט בזמן גרירה (מראה איפה זה ייכנס) */
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+/* העיצוב של האלמנט בזמן שהוא 'באוויר' */
+.cdk-drag-preview {
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.board-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  overflow-x: auto; /* גלילה הצידה אם יש הרבה עמודות */
+  height: calc(100vh - 100px); /* גובה מסך מלא פחות כותרת */
+}
+
+.board-column {
+  min-width: 300px;
+  background-color: #f4f5f7; /* צבע אפור בהיר כמו ב-Trello/ClickUp */
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.column-title {
+  margin-bottom: 15px;
+  text-align: center;
+  font-weight: bold;
+  color: #333;
+}
+
+.tasks-list {
+  flex-grow: 1;
+  min-height: 100px; /* חשוב כדי שאפשר יהיה לגרור לעמודה ריקה */
+  display: flex;
+  flex-direction: column;
+  gap: 15px; /* רווח בין כרטיסים */
+}
+
+/* עיצוב הכרטיס שלך */
+.task-card {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  cursor: grab;
+  border-left: 5px solid transparent; /* מקום לצבע עדיפות */
+}
+
+/* עיצוב לפי עדיפות (אם השתמשת בטיפ הקודם) */
+.task-card[data-priority="High"] { border-left-color: red; }
+.task-card[data-priority="Medium"] { border-left-color: orange; }
+.task-card[data-priority="Low"] { border-left-color: green; }
+
+.task-card:active {
+  cursor: grabbing;
+}
+
+/* כפתור הוספה */
+.add-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px;
+}

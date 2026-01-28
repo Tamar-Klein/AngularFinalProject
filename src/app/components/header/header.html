@@ -1,0 +1,9 @@
+<nav class="navbar">
+<h3>hello {{user()?.name}}</h3>
+
+    <a routerLink="/teams" routerLinkActive="active-link">Teams</a>
+    <a routerLink="/projects" routerLinkActive="active-link">Projects</a>
+    <a routerLink="/tasks" routerLinkActive="active-link">Tasks</a>
+   <button (click)="logout()">logout</button>
+
+</nav>

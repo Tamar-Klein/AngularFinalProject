@@ -1,0 +1,16 @@
+
+
+@for (item of projectsList()||[]; track item.id) {
+  <div class="project-item">
+    <h2>Team {{item.team_id }}</h2>
+    <h3>{{ item.name }}</h3>
+    <p>{{ item.description }}</p>
+   <button (click)="detailProject(item.id!)">Open Project</button>
+  </div>
+
+}
+
+@empty {
+    <span>you dont have a project </span>
+}
+

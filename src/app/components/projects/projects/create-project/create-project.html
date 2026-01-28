@@ -1,0 +1,43 @@
+<form [formGroup]="createProjectForm" (ngSubmit)="onSubmit()">
+    <div>
+        <label for="teamId">Team ID:</label>
+        <input id="teamId" formControlName="teamId" (blur)="isTeamIdInvalid()"/>
+        @if (isTeamIdInvalid()) {
+      <span style="color:red; display: block;">There isn't a team with this ID</span>
+       @if (createProjectForm.get('teamId')?.invalid && createProjectForm.get('teamId')?.touched) {
+        <div class="error-message">
+            @if (createProjectForm.get('teamId')?.hasError('required')) {
+            <span>This field is required</span>
+            }
+        </div>
+        }
+    }
+  
+    </div>
+    <div>
+        <label for="name">Project Name:</label>
+        <input id="name" formControlName="name" />
+               @if (createProjectForm.get('name')?.invalid && createProjectForm.get('name')?.touched) {
+        <div class="error-message">
+            @if (createProjectForm.get('name')?.hasError('required')) {
+            <span>This field is required</span>
+            }
+        </div>
+        }
+</div>
+<div>
+        <label for="description">Description:</label>
+        <input id="description" formControlName="description" />
+               @if (createProjectForm.get('description')?.invalid && createProjectForm.get('description')?.touched) {
+        <div class="error-message">
+            @if (createProjectForm.get('description')?.hasError('required')) {
+            <span>This field is required</span>
+            }
+        </div>
+        }
+</div>
+       <button type="submit" [disabled]="createProjectForm.invalid">Create Project</button>
+
+
+</form>
+

@@ -1,0 +1,52 @@
+<form [formGroup]="createTaskForm" (ngSubmit)="onSubmit()">
+
+    <div class="form-group">
+        <label>Project:</label>
+        <select formControlName="projectId">
+            <option [ngValue]="null" disabled>Select a Project</option>
+            @for (p of allProjects(); track p.id) {
+            <option [value]="p.id">{{ p.name }}</option>
+            }
+        </select>
+        @if (createTaskForm.get('projectId')?.invalid && createTaskForm.get('projectId')?.touched) {
+            <span class="error-msg">חובה לבחור פרויקט</span>
+        }
+    </div>
+    <div>
+    <label for="title">Task Name:</label>
+    <input id="title" formControlName="title" />
+    @if (createTaskForm.get('title')?.invalid && createTaskForm.get('title')?.touched) {
+            <div class="error-msg">
+                @if (createTaskForm.get('title')?.errors?.['required']) { <span>שם משימה הוא חובה</span> }
+                @if (createTaskForm.get('title')?.errors?.['minlength']) { <span>השם חייב להכיל לפחות 3 תווים</span> }
+            </div>
+        }
+</div>
+<div>
+    <label for="description">Task Description:</label>
+    <input id="description" formControlName="description" />
+
+</div>
+    <label for="status">Status:</label>
+ <select formControlName="status">
+            <option [ngValue]="null" disabled>Select a status</option>
+            <option value="todo">Todo</option>
+            <option value="in-progress">In Progress</option>
+            <option value="done">Done</option>
+        </select>
+    <label for="priority">Priority:</label>
+<select formControlName="priority">
+            <option [ngValue]="null" disabled>Select a priority</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+        </select>    
+        <div>
+
+</div>
+    <label for="dueDate">Due Date:</label>
+    <input id="dueDate" formControlName="dueDate" type="date" />
+
+    <button type="submit" [disabled]="createTaskForm.invalid">Create Task</button>
+
+</form>
