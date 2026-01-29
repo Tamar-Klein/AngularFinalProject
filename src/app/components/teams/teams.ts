@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
@@ -22,6 +23,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatInputModule,
     MatFormFieldModule,
     MatCardModule,
+    MatSnackBarModule,
     MatTooltipModule
   ],
   templateUrl: './teams.html',
@@ -30,6 +32,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class Teams implements OnInit {
 
   private teamsService = inject(TeamsService);
+  private snackBar = inject(MatSnackBar); // הזרקת ה-SnackBar
+
   teamsList = this.teamsService.teams;
   isCreating = false;
   newTeamName = '';
@@ -48,26 +52,27 @@ export class Teams implements OnInit {
     if (this.newTeamName) {
       this.teamsService.createTeam(this.newTeamName).subscribe(() => {
         this.isCreating = false;
+        this.showSuccess('Team created successfully! 🚀');
       });
     }
   }
 
   addUser(teamId: number, userId: string) {
     if (!userId) {
-      alert("please enter a valid user ID");
+      this.showError("Please enter a valid user ID");
       return;
     }
     this.teamsService.addUserToTeam(teamId, Number(userId)).subscribe({
       next: () => {
         this.toggleInvite(teamId);
-        alert("Added successfully!");
+        this.showSuccess("User added successfully! 🎉");
       },
       error: (err) => {
         console.error('Server error details:', err);
         if (err.status === 500) {
-          alert("User not found or already in team. Please check the ID.");
+          this.showError("User not found or already in team.");
         } else {
-          alert("A connection error occurred. Please try again later.");
+          this.showError("Connection error. Please try again.");
         }
       }
     });
@@ -83,5 +88,24 @@ export class Teams implements OnInit {
 
   isOnlyNumbers(value: string): boolean {
     return /^\d+$/.test(value);
+  }
+
+  // --- Proactive Helper Methods for SnackBar ---
+  private showSuccess(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: ['success-snackbar'], // עיצוב ירוק (מוגדר ב-styles.css הגלובלי)
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
+  }
+
+  private showError(message: string) {
+    this.snackBar.open(message, 'Close', {
+      duration: 4000,
+      panelClass: ['error-snackbar'], // עיצוב אדום (מוגדר ב-styles.css הגלובלי)
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom'
+    });
   }
 }

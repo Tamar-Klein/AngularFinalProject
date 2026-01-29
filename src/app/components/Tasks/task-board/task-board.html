@@ -1,66 +1,100 @@
-<div cdkDropList ... class="tasks-list"></div> 
+<div class="board-wrapper">
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
 
-<div class="board-header">
-  @if (!projectId()) {
-    <h1>Task Board</h1>
-  }
-  <button class="add-btn" (click)="goToCreateTask()">+ New Task</button>
-</div>
+    <div class="board-header">
+        <div class="header-text">
+            @if (!projectId()) {
+                <h1>Task Board</h1>
+                <p>Overview of all tasks</p>
+            } @else {
+                <h1>Project Tasks</h1>
+                <p>Manage workflow</p>
+            }
+        </div>
+        <button mat-flat-button class="add-btn" (click)="goToCreateTask()">
+            <mat-icon>add</mat-icon>
+            New Task
+        </button>
+    </div>
 
-<div class="board-container" cdkDropListGroup>
+    <div class="board-container" cdkDropListGroup>
 
-  @for (status of statusOptions; track status) {
-    <div class="board-column">
-      <h2 class="column-title">{{ status }}</h2>
+        @for (status of statusOptions; track status) {
+            <div class="board-column">
+                <div class="column-header">
+                    <span class="status-indicator" [class]="status.toLowerCase()"></span>
+                    <h2 class="column-title">{{ status }}</h2>
+                    <span class="task-count">{{ boardColumns()[status].length }}</span>
+                </div>
 
-      <div 
-        cdkDropList 
-        [id]="status" 
-        [cdkDropListData]="boardColumns()[status]"
-        (cdkDropListDropped)="drop($event, status)" 
-        class="tasks-list">
+                <div cdkDropList 
+                     [id]="status" 
+                     [cdkDropListData]="boardColumns()[status]"
+                     (cdkDropListDropped)="drop($event, status)" 
+                     class="tasks-list">
 
-        @for (task of boardColumns()[status]; track task.id) {
-          
-          <div class="task-card" cdkDrag [attr.data-priority]="task.priority">
-            
-            <div class="card-header">
-              <div class="dates">
-                 <small>Created: {{ task.created_at | date:'short' }}</small>
-                 <small>Updated: {{ task.updated_at | date:'short' }}</small>
+                    @for (task of boardColumns()[status]; track task.id) {
+                        
+                        <div class="task-card" cdkDrag>
+                            
+                            <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>
 
-                 </div>
-              <h4>{{ task.title }}</h4>
-              <span class="desc">{{ task.description }}</span>
+                            <div class="card-content-wrapper">
+                                
+                                <div class="card-header-row">
+                                    <h4 class="task-title">{{ task.title }}</h4>
+                                    
+                                    <button mat-icon-button class="more-btn" [matMenuTriggerFor]="menu" (mousedown)="$event.stopPropagation()">
+                                        <mat-icon>more_horiz</mat-icon>
+                                    </button>
+                                    <mat-menu #menu="matMenu">
+                                        <button mat-menu-item (click)="onDeleteTask(task.id!)">
+                                            <mat-icon color="warn">delete_outline</mat-icon>
+                                            <span>Delete Task</span>
+                                        </button>
+                                    </mat-menu>
+                                </div>
+
+                                <p class="task-desc">
+                                    {{ task.description || 'No additional details.' }}
+                                </p>
+
+                                <div class="meta-row">
+                                    <div class="date-badge" matTooltip="Due Date">
+                                        <mat-icon>calendar_today</mat-icon>
+                                        {{ task.due_date | date:'d MMM' }}
+                                    </div>
+
+                                    <div class="priority-badge-wrapper" (mousedown)="$event.stopPropagation()">
+                                        <mat-form-field class="priority-badge" [ngClass]="'badge-' + task.priority.toLowerCase()">
+                                            <mat-select [value]="task.priority" (selectionChange)="onUpdatePriority(task.id!, $event.value)">
+                                                @for (priority of priorityOptions; track priority) {
+                                                    <mat-option [value]="priority">{{ priority }}</mat-option>
+                                                }
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="comments-area" (mousedown)="$event.stopPropagation()">
+                                <app-comments [taskId]="task.id!"></app-comments>
+                            </div>
+
+                            <div *cdkDragPreview class="task-card-preview">
+                                <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>
+                                <h4 class="task-title">{{ task.title }}</h4>
+                            </div>
+                            
+                            <div *cdkDragPlaceholder class="task-card-placeholder"></div>
+
+                        </div>
+                        }
+                </div>
             </div>
-
-            <div class="card-body">
-              <div class="priority-area">
-                <label>priority:</label>
-                <select (change)="onUpdatePriority(task.id!, $event)" [value]="task.priority">
-                  @for (priority of priorityOptions; track priority) {
-                    <option [value]="priority" [selected]="priority === task.priority">
-                      {{ priority }}
-                    </option>
-                  }
-                </select>
-              </div>
-              
-              <div class="due-date">Due: {{ task.due_date | date:'shortDate' }}</div>
-
-              <app-comments [taskId]="task.id!"></app-comments>
-            </div>
-
-            <div class="card-footer">
-              <button class="delete-btn" (click)="onDeleteTask(task.id!)">🗑️ מחיקה</button>
-            </div>
-
-            <div *cdkDragPreview class="task-card-preview">
-              {{ task.title }}
-            </div>
-
-          </div>
-        } </div> </div>
-  }
-
+        }
+    </div>
 </div>

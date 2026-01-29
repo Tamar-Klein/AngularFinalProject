@@ -1,36 +1,63 @@
 <div class="comments-wrapper">
-  <button class="toggle-btn" (click)='toggleComments()'>
-    {{ isExpanded() ? ' close comments ▲' : ' show comments ▼' }}
-    ({{ allComments().length }})
+  
+  <button mat-button class="toggle-btn" (click)="toggleComments()">
+    <mat-icon class="toggle-icon">{{ isExpanded() ? 'expand_less' : 'chat_bubble_outline' }}</mat-icon>
+    <span class="toggle-text">
+      {{ isExpanded() ? 'Hide Comments' : 'Comments' }}
+    </span>
+    @if(allComments().length > 0) {
+        <span class="count-badge" >{{ allComments().length }}</span>
+
+
+    }
   </button>
 
   @if (isExpanded()) {
     <div class="comments-section">
-      <ul class="comments-list">
+      
+      <div class="comments-list custom-scroll">
         @for (comment of allComments(); track comment.id) {
-          <li class="comment-item">
-            <div class="comment-bubble">
-              <p class="comment-text">{{ comment.body }}</p>
-              <small>{{ comment.author_name }} | {{ comment.created_at }}</small>
+          <div class="comment-item">
+            <div class="avatar-circle">
+              {{ comment.author_name?.charAt(0)?.toUpperCase() || 'U' }}
             </div>
-          </li>
+            
+            <div class="comment-bubble">
+              <div class="bubble-header">
+                <span class="author-name">{{ comment.author_name || 'Unknown' }}</span>
+                <span class="time">{{ comment.created_at | date:'shortTime' }}</span>
+              </div>
+              <p class="comment-text">{{ comment.body }}</p>
+            </div>
+          </div>
         } @empty {
-          <p class="no-comments">there isnt no tasks</p>
+          <div class="empty-comments">
+            <mat-icon>chat</mat-icon>
+            <p>No comments yet. Start the conversation!</p>
+          </div>
         }
-      </ul>
+      </div>
 
       <div class="add-comment-box">
-        <input 
-          type="text" 
-          [ngModel]="newCommentContent()" 
-          (ngModelChange)="newCommentContent.set($event)"
-          placeholder="כתוב הערה..." 
-          (keyup.enter)="onAddComment()"
-        />
-        <button (click)="onAddComment()" [disabled]="!newCommentContent().trim()">
-          שלח
-        </button>
+        <mat-form-field appearance="outline" class="comment-field" subscriptSizing="dynamic">
+          <input matInput 
+                 type="text" 
+                 [ngModel]="newCommentContent()" 
+                 (ngModelChange)="newCommentContent.set($event)"
+                 placeholder="Write a comment..." 
+                 (keyup.enter)="onAddComment()"
+                 autocomplete="off">
+          
+          <button mat-icon-button matSuffix 
+                  (click)="onAddComment()" 
+                  [disabled]="!newCommentContent().trim()"
+                  color="primary"
+                  class="send-btn">
+            <mat-icon>send</mat-icon>
+          </button>
+        </mat-form-field>
       </div>
+
     </div>
   }
 </div>

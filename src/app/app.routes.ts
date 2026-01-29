@@ -3,7 +3,7 @@ import { Login } from './components/login/login';
 import { Register } from './components/register/register';
 import { Teams } from './components/teams/teams';
 import { Projects } from './components/projects/projects/all-projects/all-projects';
-import { createProject, } from './components/projects/projects/create-project/create-project';
+import { CreateProject } from './components/projects/projects/create-project/create-project';
 import { CreateTask } from './components/Tasks/create-task/create-task';
 import { ProjectDetails } from './components/projects/projects/project-details/project-details';
 import { authGuard } from './guards/auth-guard';
@@ -23,7 +23,7 @@ export const routes: Routes = [
         children: [
             { path: 'teams', component: Teams },
             { path: 'projects', component: Projects },
-            { path: 'createProject', component: createProject },
+            { path: 'createProject', component: CreateProject },
             { path: 'tasks', component: TaskBoard },
             { path: 'createTask', component: CreateTask },
             { path: 'projects/:projectId', component: ProjectDetails },

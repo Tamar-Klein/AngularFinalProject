@@ -1,52 +1,103 @@
-<form [formGroup]="createTaskForm" (ngSubmit)="onSubmit()">
-
-    <div class="form-group">
-        <label>Project:</label>
-        <select formControlName="projectId">
-            <option [ngValue]="null" disabled>Select a Project</option>
-            @for (p of allProjects(); track p.id) {
-            <option [value]="p.id">{{ p.name }}</option>
-            }
-        </select>
-        @if (createTaskForm.get('projectId')?.invalid && createTaskForm.get('projectId')?.touched) {
-            <span class="error-msg">חובה לבחור פרויקט</span>
-        }
+<div class="page-container">
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
     </div>
-    <div>
-    <label for="title">Task Name:</label>
-    <input id="title" formControlName="title" />
-    @if (createTaskForm.get('title')?.invalid && createTaskForm.get('title')?.touched) {
-            <div class="error-msg">
-                @if (createTaskForm.get('title')?.errors?.['required']) { <span>שם משימה הוא חובה</span> }
-                @if (createTaskForm.get('title')?.errors?.['minlength']) { <span>השם חייב להכיל לפחות 3 תווים</span> }
-            </div>
-        }
+
+    <div class="content-wrapper">
+        <mat-card class="create-card">
+            <div class="card-decoration"></div>
+            
+            <mat-card-header>
+                <div class="icon-wrapper">
+                    <mat-icon>post_add</mat-icon>
+                </div>
+                <mat-card-title>Create New Task</mat-card-title>
+                <mat-card-subtitle>Define task details and assign priority</mat-card-subtitle>
+            </mat-card-header>
+
+            <mat-card-content>
+                <form [formGroup]="createTaskForm" (ngSubmit)="onSubmit()" class="task-form">
+                    
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="custom-field full-width">
+                            <mat-label>Select Project</mat-label>
+                            <mat-icon matPrefix>folder</mat-icon>
+                            <mat-select formControlName="projectId">
+                                @for (p of allProjects(); track p.id) {
+                                    <mat-option [value]="p.id">{{ p.name }}</mat-option>
+                                }
+                            </mat-select>
+                            @if (createTaskForm.get('projectId')?.hasError('required')) {
+                                <mat-error>Project is required</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="custom-field full-width">
+                            <mat-label>Task Name</mat-label>
+                            <mat-icon matPrefix>title</mat-icon>
+                            <input matInput formControlName="title" placeholder="Ex: Fix login bug">
+                            @if (createTaskForm.get('title')?.hasError('required')) {
+                                <mat-error>Title is required</mat-error>
+                            }
+                            @if (createTaskForm.get('title')?.hasError('minlength')) {
+                                <mat-error>Minimum 3 characters</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="custom-field full-width">
+                            <mat-label>Description</mat-label>
+                            <mat-icon matPrefix class="textarea-icon">description</mat-icon>
+                            <textarea matInput formControlName="description" rows="3" placeholder="Add more details..."></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-grid-2">
+                        <mat-form-field appearance="outline" class="custom-field">
+                            <mat-label>Status</mat-label>
+                            <mat-icon matPrefix>toggle_on</mat-icon>
+                            <mat-select formControlName="status">
+                                <mat-option value="todo">Todo</mat-option>
+                                <mat-option value="in-progress">In Progress</mat-option>
+                                <mat-option value="done">Done</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="custom-field">
+                            <mat-label>Priority</mat-label>
+                            <mat-icon matPrefix>flag</mat-icon>
+                            <mat-select formControlName="priority">
+                                <mat-option value="low">Low</mat-option>
+                                <mat-option value="medium">Medium</mat-option>
+                                <mat-option value="high">High</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-row">
+                        <mat-form-field appearance="outline" class="custom-field full-width">
+                            <mat-label>Due Date</mat-label>
+                            <mat-icon matPrefix>event</mat-icon>
+                            <input matInput [matDatepicker]="picker" formControlName="dueDate" placeholder="Choose a date">
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" mat-button class="cancel-btn" (click)="createTaskForm.reset()">Reset</button>
+                        <button mat-flat-button type="submit" class="submit-btn" [disabled]="createTaskForm.invalid">
+                            Create Task
+                            <mat-icon iconPositionEnd>check_circle</mat-icon>
+                        </button>
+                    </div>
+
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>
-<div>
-    <label for="description">Task Description:</label>
-    <input id="description" formControlName="description" />
-
-</div>
-    <label for="status">Status:</label>
- <select formControlName="status">
-            <option [ngValue]="null" disabled>Select a status</option>
-            <option value="todo">Todo</option>
-            <option value="in-progress">In Progress</option>
-            <option value="done">Done</option>
-        </select>
-    <label for="priority">Priority:</label>
-<select formControlName="priority">
-            <option [ngValue]="null" disabled>Select a priority</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-        </select>    
-        <div>
-
-</div>
-    <label for="dueDate">Due Date:</label>
-    <input id="dueDate" formControlName="dueDate" type="date" />
-
-    <button type="submit" [disabled]="createTaskForm.invalid">Create Task</button>
-
-</form>

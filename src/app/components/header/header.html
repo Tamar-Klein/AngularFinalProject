@@ -1,9 +1,28 @@
 <nav class="navbar">
-<h3>hello {{user()?.name}}</h3>
+    
+    <div class="nav-brand" routerLink="/projects">
+        <mat-icon class="brand-icon">flight_takeoff</mat-icon>
+        <span class="brand-text">TaskPilot</span>
+    </div>
 
-    <a routerLink="/teams" routerLinkActive="active-link">Teams</a>
-    <a routerLink="/projects" routerLinkActive="active-link">Projects</a>
-    <a routerLink="/tasks" routerLinkActive="active-link">Tasks</a>
-   <button (click)="logout()">logout</button>
+    <div class="nav-content">
+        
+        <div class="nav-links">
+            <a routerLink="/tasks" routerLinkActive="active-link">Tasks Manager</a>
+            <a routerLink="/projects" routerLinkActive="active-link">Projects</a>
+            <a routerLink="/teams" routerLinkActive="active-link">Teams</a>
+            </div>
 
+        <div class="divider"></div>
+
+        <div class="user-actions">
+            <span class="user-greeting">
+                Hi, {{ user()?.name }}
+            </span>
+            
+            <button class="logout-btn" (click)="logout()">
+                Logout
+            </button>
+        </div>
+    </div>
 </nav>

@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, inject, input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Comments } from '../../comments/comments';
 import { CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
@@ -7,18 +7,44 @@ import { TaskService } from '../../../services/task-service';
 import { Router } from '@angular/router';
 import { TaskStatus } from '../../../models/enums/taskStatus';
 import { TaskPriority } from '../../../models/enums/taskPriority';
-import { DatePipe } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
+
+// Material Imports
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-task-board',
-  imports: [FormsModule, Comments, DragDropModule,DatePipe],
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule, 
+    Comments, 
+    DragDropModule, 
+    DatePipe,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatChipsModule,
+    MatSnackBarModule,
+    MatTooltipModule
+  ],
   templateUrl: './task-board.html',
   styleUrl: './task-board.css',
 })
-export class TaskBoard {
- projectId = input<number>(0);
- private taskService = inject(TaskService);
+export class TaskBoard implements OnInit {
+  projectId = input<number>(0);
+  private taskService = inject(TaskService);
   private router = inject(Router);
+  private snackBar = inject(MatSnackBar); // UI Feedback
 
   taskList = this.taskService.tasks;
   
@@ -63,16 +89,17 @@ export class TaskBoard {
   }
 
   onDeleteTask(taskId: number) {
-    if (confirm('האם את בטוחה שברצונך למחוק את המשימה?')) {
+    if (confirm('Are you sure you want to delete this task?')) {
       this.taskService.deleteTaskById(taskId).subscribe({
         next: () => {
-             if (this.projectId()) {
-                 this.taskService.getTasksByProjectId(this.projectId()).subscribe();
-             } else {
-                 this.taskService.getTasks().subscribe();
-             }
+          if (this.projectId()) {
+             this.taskService.getTasksByProjectId(this.projectId()).subscribe();
+          } else {
+             this.taskService.getTasks().subscribe();
+          }
+          this.showSuccess('Task deleted successfully');
         },
-        error: (err) => alert('שגיאה: ' + err.message)
+        error: (err) => this.showError('Error: ' + err.message)
       });
     }
   }
@@ -81,9 +108,8 @@ export class TaskBoard {
     this.taskService.patchTaskStatusById(taskId, newStatus).subscribe();
   }
 
-  onUpdatePriority(taskId: number, event: Event) {
-    const selectedValue = (event.target as HTMLSelectElement).value;
-    const newPriority = selectedValue as TaskPriority;
+  // Updated to support Material Select
+  onUpdatePriority(taskId: number, newPriority: TaskPriority) {
     this.taskService.patchTaskPriorityById(taskId, newPriority).subscribe();
   }
 
@@ -105,5 +131,22 @@ export class TaskBoard {
   updateTaskStatus(task: Task, newStatusId: string) {
     this.taskService.patchTaskStatusById(task.id!, newStatusId).subscribe();
   }
-}
 
+  // UI Helper for Priority Colors
+  getPriorityColor(priority: TaskPriority): string {
+    switch (priority) {
+      case TaskPriority.HIGH: return 'warn';
+      case TaskPriority.MEDIUM: return 'accent';
+      case TaskPriority.LOW: return 'primary';
+      default: return '';
+    }
+  }
+
+  private showSuccess(msg: string) {
+    this.snackBar.open(msg, 'Close', { duration: 3000, panelClass: ['success-snackbar'] });
+  }
+
+  private showError(msg: string) {
+    this.snackBar.open(msg, 'Close', { duration: 4000, panelClass: ['error-snackbar'] });
+  }
+}

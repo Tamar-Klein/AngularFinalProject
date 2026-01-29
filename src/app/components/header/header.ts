@@ -1,10 +1,24 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../services/auth-service';
+import { CommonModule } from '@angular/common';
+
+// Material Imports
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, RouterLinkActive],
+  standalone: true,
+  imports: [
+    CommonModule, 
+    RouterLink, 
+    RouterLinkActive,
+    MatIconModule,
+    MatButtonModule,
+    MatMenuModule
+  ],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })

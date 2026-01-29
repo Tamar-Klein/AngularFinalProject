@@ -1,25 +1,52 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../../services/task-service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProjectService } from '../../../services/project-service';
 import { AuthService } from '../../../services/auth-service';
+import { CommonModule } from '@angular/common';
+
+// Material Imports
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create-task',
-  imports: [ReactiveFormsModule],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterLink,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatSnackBarModule
+  ],
   templateUrl: './create-task.html',
   styleUrl: './create-task.css',
 })
-export class CreateTask {
+export class CreateTask implements OnInit {
   private fb = inject(FormBuilder);
   private taskService = inject(TaskService);
   private projectService = inject(ProjectService);
-  allProjects = this.projectService.projects;
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private snackBar = inject(MatSnackBar); // UI Feedback
 
+  allProjects = this.projectService.projects;
   private user = this.authService.currentUser();
 
   createTaskForm = this.fb.group({
@@ -32,8 +59,8 @@ export class CreateTask {
     dueDate: [null],
     orderIndex: [0]
   });
+
   ngOnInit() {
-    const user = this.authService.currentUser();
     const idFromUrl = this.route.snapshot.params['projectId'];
 
     this.projectService.getProjects().subscribe();
@@ -41,27 +68,37 @@ export class CreateTask {
     if (idFromUrl) {
       this.createTaskForm.get('projectId')?.setValue(Number(idFromUrl));
       this.createTaskForm.get('projectId')?.disable();
-    }
-    else {
+    } else {
       this.createTaskForm.get('projectId')?.enable();
     }
   }
-
-
 
   onSubmit() {
     if (this.createTaskForm.valid) {
       this.taskService.createTask(this.createTaskForm.getRawValue() as any).subscribe({
         next: () => {
-          alert('המשימה נוצרה בהצלחה!');
-          this.router.navigate(['/tasks']);
+          this.showSuccess('Task created successfully! 🎉');
+          // ניווט חכם: אם הגענו מתוך פרויקט, נחזור אליו. אחרת לרשימה הכללית.
+          const currentProjectId = this.createTaskForm.getRawValue().projectId;
+          if (currentProjectId) {
+             this.router.navigate(['/projects', currentProjectId]);
+          } else {
+             this.router.navigate(['/tasks']);
+          }
         },
         error: (err) => {
-          alert('אירעה שגיאה ביצירת המשימה: ' + err.message);
+          this.showError('Error creating task: ' + err.message);
         }
       });
     }
   }
+
+  // --- Helpers ---
+  private showSuccess(msg: string) {
+    this.snackBar.open(msg, 'Close', { duration: 3000, panelClass: ['success-snackbar'], verticalPosition: 'top' });
+  }
+
+  private showError(msg: string) {
+    this.snackBar.open(msg, 'Close', { duration: 5000, panelClass: ['error-snackbar'], verticalPosition: 'top' });
+  }
 }
-
-
