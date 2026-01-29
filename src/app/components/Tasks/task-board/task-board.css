@@ -29,21 +29,58 @@
 }
 
 /* ================= CONTAINER ================= */
+/* שינוי ה-Wrapper כדי שיאפשר גלילה של כל העמוד במידת הצורך */
+/* 1. ה-Wrapper הראשי - מאפשרים לדף כולו לגדול */
+/* 1. ה-Wrapper - חייב להיות גמיש */
 .board-wrapper {
-    height: 100vh; /* Full viewport height */
-    width: 100%;
-    position: relative;
-    background-color: var(--bg-page);
-    
-    /* Light Grid Pattern */
-    background-image: 
-        linear-gradient(var(--grid-line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-    background-size: 50px 50px;
-    
+    min-height: 100vh;
+    height: auto !important; /* משחרר את הנעילה של ה-100vh */
+    overflow-y: visible !important; 
     display: flex;
     flex-direction: column;
-    overflow: hidden; 
+    position: relative;
+}
+
+/* 2. המיכל של העמודות - align-items: flex-start הוא המפתח */
+.board-container {
+    display: flex;
+    gap: 32px;
+    padding: 0 40px 100px 40px; /* ריווח נדיב למטה */
+    justify-content: center; 
+    align-items: flex-start; /* חשוב: מונע מהעמודות להימתח לגובה אחיד */
+    height: auto !important;
+    overflow-x: auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* 3. העמודה - ביטול כל הגבלת גובה */
+.board-column {
+    min-width: 340px;
+    max-width: 340px;
+    flex-shrink: 0;
+    background: var(--bg-column); 
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    
+    /* התיקון הקריטי: */
+    height: fit-content !important; 
+    max-height: none !important; 
+    box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+}
+
+/* 4. רשימת המשימות - ביטול גלילה פנימית */
+.tasks-list {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    
+    /* התיקון הקריטי: */
+    overflow-y: visible !important; 
+    height: auto !important;
+    min-height: 150px;
 }
 
 /* ================= BACKGROUND SHAPES ================= */
@@ -123,7 +160,6 @@
     border-radius: 20px;
     display: flex;
     flex-direction: column;
-    max-height: 85vh; 
     box-shadow: 0 4px 20px rgba(0,0,0,0.02);
 }
 
@@ -160,8 +196,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    overflow-y: auto;
-    min-height: 150px; /* Bigger drop area */
+    overflow-y: visible;    min-height: 150px; /* Bigger drop area */
 }
 
 /* Scrollbar for inside column */
@@ -217,13 +252,13 @@
     margin: 0; line-height: 1.4;
 }
 
-.more-btn {
+.delete-btn {
     width: 24px !important; height: 24px !important; line-height: 24px !important;
-    color: var(--text-muted); opacity: 0.6; transition: opacity 0.2s;
+    color: #ef4444 !important; opacity: 0.6; transition: opacity 0.2s;
     margin-right: -8px;
 }
-.more-btn:hover { opacity: 1; color: var(--text-dark); }
-.more-btn mat-icon { font-size: 20px; width: 20px; height: 20px; }
+.delete-btn:hover { opacity: 1; color: #dc2626 !important; }
+.delete-btn mat-icon { font-size: 20px; width: 20px; height: 20px; }
 
 .task-desc {
     font-size: 13px; color: var(--text-muted); line-height: 1.6;
@@ -245,10 +280,10 @@
 .date-badge mat-icon { font-size: 14px; width: 14px; height: 14px; }
 
 /* Priority Badge Styles */
-.priority-badge-wrapper { position: relative; min-width: 85px; }
+.priority-badge-wrapper { position: relative; min-width: 90px; }
 
 ::ng-deep .priority-badge .mat-mdc-text-field-wrapper {
-    background-color: transparent !important; padding: 0 !important; height: 26px !important;
+    background-color: transparent !important; padding: 0 !important; height: 32px !important;
 }
 ::ng-deep .priority-badge .mat-mdc-form-field-infix {
     padding: 0 !important; border: none !important; min-height: unset !important; width: auto !important;
@@ -258,15 +293,21 @@
 
 ::ng-deep .priority-badge .mat-mdc-select-trigger {
     display: flex; align-items: center; justify-content: center;
-    font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
-    padding: 0 12px; border-radius: 12px; height: 26px;
-    transition: all 0.2s;
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 4px 14px; border-radius: 8px; height: 32px;
+    transition: all 0.2s ease;
+    border: 1px solid !important;
+    cursor: pointer;
+}
+::ng-deep .priority-badge .mat-mdc-select-trigger:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
 ::ng-deep .priority-badge .mat-mdc-select-arrow { display: none; }
 
-.badge-high ::ng-deep .mat-mdc-select-trigger { background: #fef2f2; color: #ef4444; border: 1px solid #fee2e2; }
-.badge-medium ::ng-deep .mat-mdc-select-trigger { background: #fffbeb; color: #f59e0b; border: 1px solid #fef3c7; }
-.badge-low ::ng-deep .mat-mdc-select-trigger { background: #eff6ff; color: #3b82f6; border: 1px solid #dbeafe; }
+.badge-high ::ng-deep .mat-mdc-select-trigger { background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); color: #dc2626 !important; border-color: #fca5a5 !important; }
+.badge-medium ::ng-deep .mat-mdc-select-trigger { background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); color: #d97706 !important; border-color: #fcd34d !important; }
+.badge-low ::ng-deep .mat-mdc-select-trigger { background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); color: #2563eb !important; border-color: #93c5fd !important; }
 
 /* --- Comments Area --- */
 .comments-area {
@@ -289,4 +330,85 @@
     background: rgba(139, 92, 246, 0.04);
     border: 2px dashed #d8b4fe; border-radius: 16px; min-height: 120px;
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+/* ================= CARD FOOTER ================= */
+.card-footer {
+    padding: 8px 16px;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.comment-trigger {
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 0 8px !important;
+    min-width: unset !important;
+}
+
+.comment-trigger mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+}
+
+.comment-trigger:hover {
+    color: var(--primary-color) !important;
+    background-color: rgba(139, 92, 246, 0.05) !important;
+}
+
+::ng-deep .custom-dialog-container .mat-mdc-dialog-container {
+    border-radius: 20px !important;
+    padding: 24px !important;
+}
+/* עיצוב נקי יותר ל-Select של העדיפות */
+::ng-deep .priority-badge .mat-mdc-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 10px;
+    border-radius: 8px; /* פינות פחות עגולות ויותר מודרניות */
+    height: 28px;
+    border: none !important;
+}
+
+/* צבעים ברורים יותר */
+.badge-high ::ng-deep .mat-mdc-select-trigger { background: #fee2e2 !important; color: #dc2626 !important; }
+.badge-medium ::ng-deep .mat-mdc-select-trigger { background: #fef3c7 !important; color: #d97706 !important; }
+.badge-low ::ng-deep .mat-mdc-select-trigger { background: #dbeafe !important; color: #2563eb !important; }
+::ng-deep .priority-badge .mat-mdc-select-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0 12px;
+    border-radius: 8px;
+    height: 28px;
+    border: none !important;
+    transition: all 0.2s ease;
+}
+
+/* צבעים חיים יותר לעדיפויות */
+.badge-high ::ng-deep .mat-mdc-select-trigger { 
+    background: #fee2e2 !important; color: #dc2626 !important; 
+}
+.badge-medium ::ng-deep .mat-mdc-select-trigger { 
+    background: #fef3c7 !important; color: #d97706 !important; 
+}
+.badge-low ::ng-deep .mat-mdc-select-trigger { 
+    background: #dbeafe !important; color: #2563eb !important; 
+}
+::ng-deep .priority-badge .mat-mdc-select-value {
+    display: flex !important;
+    justify-content: center !important;
+    text-align: center !important;
 }

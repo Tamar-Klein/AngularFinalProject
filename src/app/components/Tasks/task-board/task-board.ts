@@ -18,15 +18,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-task-board',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule, 
-    Comments, 
-    DragDropModule, 
+    FormsModule,
+    Comments,
+    DragDropModule,
     DatePipe,
     MatButtonModule,
     MatIconModule,
@@ -35,7 +36,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatSelectModule,
     MatChipsModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule,
   ],
   templateUrl: './task-board.html',
   styleUrl: './task-board.css',
@@ -44,10 +46,11 @@ export class TaskBoard implements OnInit {
   projectId = input<number>(0);
   private taskService = inject(TaskService);
   private router = inject(Router);
-  private snackBar = inject(MatSnackBar); // UI Feedback
+  private snackBar = inject(MatSnackBar);
+  private dialog = inject(MatDialog);
 
   taskList = this.taskService.tasks;
-  
+
   protected readonly taskStatus = TaskStatus;
   protected readonly taskPriority = TaskPriority;
   statusOptions = Object.values(TaskStatus);
@@ -89,19 +92,24 @@ export class TaskBoard implements OnInit {
   }
 
   onDeleteTask(taskId: number) {
-    if (confirm('Are you sure you want to delete this task?')) {
+    // פתיחת סנאק-בר עם כפתור פעולה
+    const snack = this.snackBar.open('Are you sure you want to delete this task?', 'CONFIRM', {
+      duration: 5000, // נותן למשתמש 5 שניות להחליט
+      panelClass: ['warning-snackbar']
+    });
+
+    snack.onAction().subscribe(() => {
+      // הפעולה תתבצע רק אם המשתמש לחץ על CONFIRM
       this.taskService.deleteTaskById(taskId).subscribe({
         next: () => {
-          if (this.projectId()) {
-             this.taskService.getTasksByProjectId(this.projectId()).subscribe();
-          } else {
-             this.taskService.getTasks().subscribe();
-          }
+          this.projectId() ?
+            this.taskService.getTasksByProjectId(this.projectId()).subscribe() :
+            this.taskService.getTasks().subscribe();
           this.showSuccess('Task deleted successfully');
         },
         error: (err) => this.showError('Error: ' + err.message)
       });
-    }
+    });
   }
 
   onUpdateStatus(taskId: number, newStatus: string) {
@@ -132,7 +140,6 @@ export class TaskBoard implements OnInit {
     this.taskService.patchTaskStatusById(task.id!, newStatusId).subscribe();
   }
 
-  // UI Helper for Priority Colors
   getPriorityColor(priority: TaskPriority): string {
     switch (priority) {
       case TaskPriority.HIGH: return 'warn';
@@ -148,5 +155,16 @@ export class TaskBoard implements OnInit {
 
   private showError(msg: string) {
     this.snackBar.open(msg, 'Close', { duration: 4000, panelClass: ['error-snackbar'] });
+  }
+
+  openComments(taskId: number, taskTitle: string) {
+    this.dialog.open(Comments, {
+      width: '600px',
+      maxWidth: '95vw',
+      height: 'auto',
+      maxHeight: '90vh',
+      data: { taskId, title: taskTitle },
+      panelClass: 'comments-dialog'
+    });
   }
 }

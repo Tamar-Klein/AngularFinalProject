@@ -104,7 +104,7 @@ export class Login {
               panelClass: ['success-snackbar']
             }
           );
-          this.router.navigate(['/projects']);
+          this.router.navigate(['/dashboard']);
         },
         error: (err) => {
           this.isLoading = false;

@@ -46,15 +46,9 @@
                                 <div class="card-header-row">
                                     <h4 class="task-title">{{ task.title }}</h4>
                                     
-                                    <button mat-icon-button class="more-btn" [matMenuTriggerFor]="menu" (mousedown)="$event.stopPropagation()">
-                                        <mat-icon>more_horiz</mat-icon>
+                                    <button mat-icon-button class="delete-btn" (click)="onDeleteTask(task.id!)" (mousedown)="$event.stopPropagation()" matTooltip="Delete Task">
+                                        <mat-icon>delete_outline</mat-icon>
                                     </button>
-                                    <mat-menu #menu="matMenu">
-                                        <button mat-menu-item (click)="onDeleteTask(task.id!)">
-                                            <mat-icon color="warn">delete_outline</mat-icon>
-                                            <span>Delete Task</span>
-                                        </button>
-                                    </mat-menu>
                                 </div>
 
                                 <p class="task-desc">
@@ -79,9 +73,12 @@
                                 </div>
                             </div>
 
-                            <div class="comments-area" (mousedown)="$event.stopPropagation()">
-                                <app-comments [taskId]="task.id!"></app-comments>
-                            </div>
+                       <div class="card-footer">
+  <button mat-button class="comment-trigger" (click)="openComments(task.id!, task.title)">
+    <mat-icon>chat_bubble_outline</mat-icon>
+    Comments
+  </button>
+</div>
 
                             <div *cdkDragPreview class="task-card-preview">
                                 <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>

@@ -12,12 +12,20 @@ import { MainLayout } from './layout/main-layout/main-layout';
 import { TaskBoard } from './components/Tasks/task-board/task-board';
 import { Dashboard } from './components/dashboard/dashboard';
 import { NotFound } from './components/not-found/not-found';
+import { guestGuard } from './guards/guest-guard-guard';
+import { AuthService } from './services/auth-service';
+import { inject } from '@angular/core';
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
-    { path: 'login', component: Login },
-    { path: 'register', component: Register },
-    { path: 'landingPage', component: LandingPage },
+    {
+        path: '', pathMatch: 'full',
+        redirectTo: () => {
+            const authService = inject(AuthService);
+            return authService.isLoggedIn()|| authService.getToken()? 'dashboard' : 'landingPage';
+        }
+    }, { path: 'landingPage', component: LandingPage, canActivate: [guestGuard] },
+    { path: 'login', component: Login, canActivate: [guestGuard] },
+    { path: 'register', component: Register, canActivate: [guestGuard] },
     {
         path: '',
         component: MainLayout,

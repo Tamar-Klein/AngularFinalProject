@@ -10,6 +10,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-comments',
@@ -22,33 +23,50 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatFormFieldModule,
     MatInputModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
   ],
   templateUrl: './comments.html',
   styleUrl: './comments.css',
 })
-export class Comments implements OnInit {
+export class Comments  {
 
   taskId = input.required<number>();
   private commentsService = inject(CommentsService);
-  private snackBar = inject(MatSnackBar); // UI Feedback
+  private snackBar = inject(MatSnackBar);
 
-  // הערה: יש לוודא שהסרוויס מסנן את התגובות לפי ה-ID של המשימה הנוכחית
-  // או שהקומפוננטה מסננת אותן כאן. בהנחה שהסרוויס מטפל בזה:
+
+  private dialogRef = inject(MatDialogRef<Comments>, { optional: true });
+  private dialogData = inject(MAT_DIALOG_DATA, { optional: true });
+  taskTitle = signal<string>('Task Comments');
+
   allComments = this.commentsService.comments;
   
   newCommentContent = signal('');
   isExpanded = signal(false); 
+  effectiveTaskId!: number;
 
   ngOnInit() {
-     // טעינה ראשונית (אופציונלי, תלוי אם רוצים לטעון הכל מראש או רק בפתיחה)
-     // this.commentsService.getCommentsByTaskId(this.taskId()).subscribe();
+   this.effectiveTaskId = this.dialogData?.taskId || this.taskId();
+
+    if (this.dialogData?.title) {
+      this.taskTitle.set(this.dialogData.title);
+    }
+    
+    this.commentsService.getCommentsByTaskId(this.effectiveTaskId).subscribe();
   }
+
+close() {
+  if (this.dialogRef) {
+    this.dialogRef.close();
+  } else {
+    this.isExpanded.set(false); // סגירה אם זה בתוך הכרטיס
+  }
+}
 
   toggleComments() {
     this.isExpanded.update(val => !val);
     
-    // טעינה רק כשפותחים את הטאב (Lazy Load) - חוסך משאבים
     if (this.isExpanded()) {
       this.commentsService.getCommentsByTaskId(this.taskId()).subscribe();
     }
@@ -56,19 +74,14 @@ export class Comments implements OnInit {
 
   onAddComment() {
     if (this.newCommentContent().trim()) {
-      this.commentsService.addComment(this.taskId(), this.newCommentContent()).subscribe({
+      this.commentsService.addComment(this.effectiveTaskId, this.newCommentContent()).subscribe({
         next: () => {
           this.newCommentContent.set(''); 
-          // אין צורך בהודעת הצלחה על כל תגובה בצ'אט, זה מציק. רק ניקוי שדה.
         },
         error: (err) => {
-          this.snackBar.open('Error adding comment', 'Close', {
-            duration: 3000,
-            panelClass: ['error-snackbar'],
-            verticalPosition: 'bottom'
-          });
+          this.snackBar.open('Error adding comment', 'Close', { duration: 3000 });
         }
       });
     }
-  }
+}
 }

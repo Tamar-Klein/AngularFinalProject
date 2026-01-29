@@ -3,29 +3,21 @@
 :host {
   display: block;
   width: 100%;
-
-  /* --- משתנים מותאמים לגרסה הבהירה --- */
-  --footer-bg: #ffffff;             /* רקע לבן */
-  --footer-border: #e2e8f0;         /* גבול אפור עדין */
-  --text-header: #0f172a;           /* כותרות בשחור/כחול כהה מאוד */
-  --text-body: #64748b;             /* טקסט רגיל באפור כהה */
-  --text-hover: #8b5cf6;            /* סגול להובר */
-  
-  --font-display: 'Clash Display', sans-serif;
-  --font-body: 'Satoshi', sans-serif;
+  /* התיקון הקריטי: */
+  margin-top: auto; 
 }
-
-/* ============================================
-   FOOTER STYLES (LIGHT VERSION)
-   ============================================ */
 
 .footer {
   background: var(--footer-bg);
   border-top: 1px solid var(--footer-border);
-  padding: 80px 40px 30px; /* ריווח זהה למקור */
+  padding: 80px 40px 30px;
   font-family: var(--font-body);
+  
+  /* מוודא שהפוטר לא יתכווץ וייצור חיתוך */
+  flex-shrink: 0; 
+  position: relative;
+  z-index: 5;
 }
-
 .footer-content {
   max-width: 1400px;
   margin: 0 auto;

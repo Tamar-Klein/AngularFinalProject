@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProjectService } from '../../../../services/project-service';
 import { Router, RouterLink } from '@angular/router'; // הוספתי RouterLink לכפתור ביטול
@@ -12,6 +12,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-create-project',
@@ -25,71 +27,53 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatButtonModule,
     MatIconModule,
     MatCardModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatSelectModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './create-project.html',
   styleUrl: './create-project.css',
 })
-export class CreateProject  {
+export class CreateProject implements OnInit {
   private fb = inject(FormBuilder);
   private projectService = inject(ProjectService);
-  private router = inject(Router);
-  private teamService = inject(TeamsService);
-  private snackBar = inject(MatSnackBar); // UI improvement
+  private teamService = inject(TeamsService); 
+
+  private router = inject(Router); 
+  private snackBar = inject(MatSnackBar);
+  
+  protected teams = this.teamService.teams; 
+
+  isLoading = false;
 
   createProjectForm = this.fb.nonNullable.group({
-    teamId: ['', Validators.required],
-    name: ['', [Validators.required]],
+    teamId: ['', [Validators.required]], // כבר לא צריך pattern, כי זה Select
+    name: ['', [Validators.required, Validators.minLength(3)]],
     description: ['', [Validators.required]],
   });
 
   ngOnInit() {
-    this.teamService.getTeams().subscribe(teams => {
-    });
-  }
-
-  isTeamIdInvalid() {
-    const control = this.createProjectForm.get('teamId');
-    if (!control || !control.value || control.pristine) return false;
-
-    const exists = this.teamService.teams().some(team => team.id === Number(control.value));
-    return !exists;
+    this.teamService.getTeams().subscribe();
   }
 
   onSubmit() {
-    if (this.createProjectForm.valid && !this.isTeamIdInvalid()) {
-      const { teamId, name, description } = this.createProjectForm.getRawValue();
-      
-      this.projectService.createProject({ teamId: Number(teamId), name, description }).subscribe({
-        next: (response) => {
-          this.showSuccess("The project was created successfully! 🚀");
+    if (this.createProjectForm.valid) {
+      this.isLoading = true;
+      const formValue = this.createProjectForm.getRawValue();
+      this.projectService.createProject({
+        ...formValue,
+        teamId: Number(formValue.teamId)
+      }).subscribe({
+       next: () => {
+          this.isLoading = false; 
+          this.snackBar.open('Project created successfully! 🚀', 'Close', { duration: 3000 });
           this.router.navigate(['/projects']);
         },
         error: (err) => {
-          console.error('Create project failed', err);
-          const errorMsg = err.error?.message || 'Unknown error occurred';
-          this.showError('Error: ' + errorMsg);
+          this.isLoading = false; 
+          this.snackBar.open('Failed to create project', 'Close', { duration: 5000 });
         }
       });
     }
-  }
-
-  // --- Helpers for SnackBar ---
-  private showSuccess(message: string) {
-    this.snackBar.open(message, 'Close', {
-      duration: 3000,
-      panelClass: ['success-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'top'
-    });
-  }
-
-  private showError(message: string) {
-    this.snackBar.open(message, 'Close', {
-      duration: 5000,
-      panelClass: ['error-snackbar'],
-      horizontalPosition: 'center',
-      verticalPosition: 'top'
-    });
   }
 }

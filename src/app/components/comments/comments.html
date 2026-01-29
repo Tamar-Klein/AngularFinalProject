@@ -1,63 +1,54 @@
-<div class="comments-wrapper">
-  
-  <button mat-button class="toggle-btn" (click)="toggleComments()">
-    <mat-icon class="toggle-icon">{{ isExpanded() ? 'expand_less' : 'chat_bubble_outline' }}</mat-icon>
-    <span class="toggle-text">
-      {{ isExpanded() ? 'Hide Comments' : 'Comments' }}
-    </span>
-    @if(allComments().length > 0) {
-        <span class="count-badge" >{{ allComments().length }}</span>
-
-
-    }
-  </button>
-
-  @if (isExpanded()) {
-    <div class="comments-section">
-      
-      <div class="comments-list custom-scroll">
-        @for (comment of allComments(); track comment.id) {
-          <div class="comment-item">
-            <div class="avatar-circle">
-              {{ comment.author_name?.charAt(0)?.toUpperCase() || 'U' }}
-            </div>
-            
-            <div class="comment-bubble">
-              <div class="bubble-header">
-                <span class="author-name">{{ comment.author_name || 'Unknown' }}</span>
-                <span class="time">{{ comment.created_at | date:'shortTime' }}</span>
-              </div>
-              <p class="comment-text">{{ comment.body }}</p>
-            </div>
-          </div>
-        } @empty {
-          <div class="empty-comments">
-            <mat-icon>chat</mat-icon>
-            <p>No comments yet. Start the conversation!</p>
-          </div>
-        }
-      </div>
-
-      <div class="add-comment-box">
-        <mat-form-field appearance="outline" class="comment-field" subscriptSizing="dynamic">
-          <input matInput 
-                 type="text" 
-                 [ngModel]="newCommentContent()" 
-                 (ngModelChange)="newCommentContent.set($event)"
-                 placeholder="Write a comment..." 
-                 (keyup.enter)="onAddComment()"
-                 autocomplete="off">
-          
-          <button mat-icon-button matSuffix 
-                  (click)="onAddComment()" 
-                  [disabled]="!newCommentContent().trim()"
-                  color="primary"
-                  class="send-btn">
-            <mat-icon>send</mat-icon>
-          </button>
-        </mat-form-field>
-      </div>
-
+<div class="dialog-wrapper">
+  <div class="dialog-header">
+    <div class="header-main">
+      <mat-icon class="title-icon">chat_bubble</mat-icon>
+      <h2>{{ taskTitle() }}</h2>
     </div>
-  }
+    <button mat-icon-button (click)="close()" class="close-btn" matTooltip="Close">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="comments-content">
+    <div class="comments-list">
+      @for (comment of allComments(); track comment.id) {
+        <div class="comment-item">
+          <div class="comment-avatar">
+             {{ comment.author_name?.charAt(0) || 'U' }}
+          </div>
+          <div class="comment-body">
+            <div class="comment-info">
+              <span class="user-name">{{ comment.author_name || 'Unknown User' }}</span>
+              <span class="comment-date">{{ comment.created_at | date:'MMM d, HH:mm' }}</span>
+            </div>
+            <p class="comment-text">{{ comment.body }}</p>
+          </div>
+        </div>
+      } @empty {
+        <div class="empty-comments">
+          <mat-icon>notes</mat-icon>
+          <p>No comments yet. Be the first to say something!</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <div class="comment-input-area">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Add a comment...</mat-label>
+      <textarea matInput 
+                [ngModel]="newCommentContent()" 
+                (ngModelChange)="newCommentContent.set($event)"
+                rows="2"
+                placeholder="Type your message here..."></textarea>
+      
+      <button mat-icon-button matSuffix 
+              [disabled]="!newCommentContent().trim()" 
+              (click)="onAddComment()"
+              class="send-btn"
+              matTooltip="Send comment">
+        <mat-icon>send</mat-icon>
+      </button>
+    </mat-form-field>
+  </div>
 </div>

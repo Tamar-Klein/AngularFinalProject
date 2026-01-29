@@ -7,7 +7,7 @@
     <div class="content-wrapper">
         <mat-card class="create-card">
             <div class="card-decoration"></div>
-            
+
             <mat-card-header>
                 <div class="icon-wrapper">
                     <mat-icon>add_task</mat-icon>
@@ -18,53 +18,70 @@
 
             <mat-card-content>
                 <form [formGroup]="createProjectForm" (ngSubmit)="onSubmit()" class="project-form">
-                    
+
                     <div class="form-group">
-                        <label class="input-label">Team ID</label>
+                        <label class="input-label">Select Team</label>
                         <mat-form-field appearance="outline" class="custom-field">
                             <mat-icon matPrefix>groups</mat-icon>
-                            <input matInput id="teamId" formControlName="teamId" (blur)="isTeamIdInvalid()" placeholder="Enter Team ID">
-                            
-                            @if (isTeamIdInvalid()) {
-                                <mat-error>
-                                    <mat-icon class="error-icon">warning</mat-icon>
-                                    No team found with this ID
-                                </mat-error>
-                            }
-                            @if (createProjectForm.get('teamId')?.hasError('required')) {
-                                <mat-error>Team ID is required</mat-error>
-                            }
-                        </mat-form-field>
-                    </div>
-                  
-                    <div class="form-group">
-                        <label class="input-label">Project Name</label>
-                        <mat-form-field appearance="outline" class="custom-field">
-                            <mat-icon matPrefix>label</mat-icon>
-                            <input matInput id="name" formControlName="name" placeholder="Ex: Website Redesign">
-                            @if (createProjectForm.get('name')?.hasError('required')) {
-                                <mat-error>Project name is required</mat-error>
+                            <mat-select formControlName="teamId" placeholder="Choose a team">
+                                @for (team of teams(); track team.id) {
+                                <mat-option [value]="team.id">
+                                    {{ team.name }} (ID: {{ team.id }})
+                                </mat-option>
+                                } @empty {
+                                <mat-option disabled>No teams found</mat-option>
+                                }
+                            </mat-select>
+
+                            @if (createProjectForm.get('teamId')?.hasError('required') &&
+                            createProjectForm.get('teamId')?.touched) {
+                            <mat-error>Please select a team</mat-error>
                             }
                         </mat-form-field>
                     </div>
 
                     <div class="form-group">
-                        <label class="input-label">Description</label>
+                        <label class="input-label" for="name">Project Name</label>
+                        <mat-form-field appearance="outline" class="custom-field">
+                            <mat-icon matPrefix>label</mat-icon>
+                            <input matInput id="name" formControlName="name" placeholder="Ex: Website Redesign">
+
+                            @if (createProjectForm.get('name')?.hasError('required') &&
+                            createProjectForm.get('name')?.touched) {
+                            <mat-error>Project name is required</mat-error>
+                            }
+                            @if (createProjectForm.get('name')?.hasError('minlength')) {
+                            <mat-error>Name must be at least 3 characters</mat-error>
+                            }
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="input-label" for="description">Description</label>
                         <mat-form-field appearance="outline" class="custom-field">
                             <mat-icon matPrefix class="textarea-icon">description</mat-icon>
-                            <textarea matInput id="description" formControlName="description" rows="4" placeholder="Describe the project goals..."></textarea>
-                            @if (createProjectForm.get('description')?.hasError('required')) {
-                                <mat-error>Description is required</mat-error>
+                            <textarea matInput id="description" formControlName="description" rows="4"
+                                placeholder="Describe the project goals..."></textarea>
+
+                            @if (createProjectForm.get('description')?.hasError('required') &&
+                            createProjectForm.get('description')?.touched) {
+                            <mat-error>Description is required</mat-error>
                             }
                         </mat-form-field>
                     </div>
 
                     <div class="form-actions">
                         <a routerLink="/projects" mat-button class="cancel-btn">Cancel</a>
-                        <button mat-flat-button type="submit" class="submit-btn" 
-                                [disabled]="createProjectForm.invalid || isTeamIdInvalid()">
+                        <button mat-flat-button type="submit" class="submit-btn"
+                            [disabled]="createProjectForm.invalid || isLoading">
+
+                            @if (isLoading) {
+                            <mat-spinner diameter="24" class="button-spinner"></mat-spinner>
+                            Creating...
+                            } @else {
                             Create Project
                             <mat-icon iconPositionEnd>rocket_launch</mat-icon>
+                            }
                         </button>
                     </div>
 
