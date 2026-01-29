@@ -1,24 +1,41 @@
-@if (project(); as p) {
-<div class="project-page">
-  <header class="project-header">
-    <div class="info">
-      <h1>{{ p.name }}</h1>
-      <p class="description">{{ p.description }}</p>
-      <div class="meta">
-        <span class="badge" [attr.data-status]="p.status">{{ p.status }}</span>
-        <span class="team">Team ID: {{ p.team_id }}</span>
-        <span class="date">Created: {{ p.created_at | date:'shortDate' }}</span>
-      </div>
-    </div>
-    </header>
-
-  <hr />
-
-  <section class="tasks-section">
-    <app-task-board [projectId]="p.id!"></app-task-board>
-  </section>
-  
+<div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
 </div>
+
+@if (project(); as p) {
+    <div class="project-header-wrapper">
+        <div class="header-content">
+            <div class="info">
+                <h1>{{ p.name }}</h1>
+                <p class="description">{{ p.description || 'No description provided.' }}</p>
+                
+                <div class="meta">
+                    <span class="badge" [attr.data-status]="p.status">
+                        <mat-icon class="meta-icon">circle</mat-icon>
+                        {{ p.status }}
+                    </span>
+                    
+                    <span class="team-badge">
+                        <mat-icon class="meta-icon">groups</mat-icon>
+                        Team #{{ p.team_id }}
+                    </span>
+                    
+                    <span class="date-badge">
+                        <mat-icon class="meta-icon">calendar_today</mat-icon>
+                        Created: {{ p.created_at | date:'mediumDate' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="tasks-section">
+        <app-task-board [projectId]="p.id!"></app-task-board>
+    </section>
+
 } @else {
-  <p>Loading project details...</p>
+    <div class="loading-state">
+        <p>Loading project details...</p>
+    </div>
 }

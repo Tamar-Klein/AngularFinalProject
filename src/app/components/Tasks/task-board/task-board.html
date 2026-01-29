@@ -8,10 +8,10 @@
         <div class="header-text">
             @if (!projectId()) {
                 <h1>Task Board</h1>
-                <p>Overview of all tasks</p>
+                <p>Manage tasks across all projects</p>
             } @else {
                 <h1>Project Tasks</h1>
-                <p>Manage workflow</p>
+                <p>Track progress and manage workflow</p>
             }
         </div>
         <button mat-flat-button class="add-btn" (click)="goToCreateTask()">
@@ -43,7 +43,6 @@
                             <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>
 
                             <div class="card-content-wrapper">
-                                
                                 <div class="card-header-row">
                                     <h4 class="task-title">{{ task.title }}</h4>
                                     
@@ -92,7 +91,7 @@
                             <div *cdkDragPlaceholder class="task-card-placeholder"></div>
 
                         </div>
-                        }
+                    }
                 </div>
             </div>
         }

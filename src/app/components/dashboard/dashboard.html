@@ -1,0 +1,187 @@
+<div class="dashboard-layout">
+    
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-section">
+                <mat-icon class="logo-icon">rocket_launch</mat-icon>
+                <span class="logo-text">TaskPilot</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <a class="nav-item active" routerLink="/dashboard">
+                <mat-icon>dashboard</mat-icon>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-item" routerLink="/projects">
+                <mat-icon>folder_special</mat-icon>
+                <span>Projects</span>
+            </a>
+            <a class="nav-item" routerLink="/tasks">
+                <mat-icon>check_circle</mat-icon>
+                <span>Tasks</span>
+            </a>
+            <a class="nav-item" routerLink="/teams">
+                <mat-icon>groups</mat-icon>
+                <span>Teams</span>
+            </a>
+            <a class="nav-item">
+                <mat-icon>analytics</mat-icon>
+                <span>Analytics</span>
+            </a>
+            <a class="nav-item">
+                <mat-icon>settings</mat-icon>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">
+                    {{ user()?.name?.charAt(0)?.toUpperCase() || 'U' }}
+                </div>
+                <div class="user-info">
+                    <div class="user-name">{{ user()?.name }}</div>
+                    <div class="user-role">Admin</div>
+                </div>
+            </div>
+          
+        </div>
+    </aside>
+
+    <main class="main-content">
+        
+        <div class="background-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+        </div>
+
+        <div class="content-wrapper">
+            
+            <div class="dashboard-header">
+                <div class="header-text">
+                    <h1 class="page-title">Hello, {{ user()?.name }}! 👋</h1>
+                    <p class="page-subtitle">Here's your daily overview.</p>
+                </div>
+                <button mat-flat-button class="create-btn" (click)="createProject()">
+                    <mat-icon>add</mat-icon>
+                    New Project
+                </button>
+            </div>
+
+            <div class="stats-grid">
+                
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <mat-icon>folder</mat-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Active Projects</span>
+                        <span class="stat-value">{{ activeProjectsCount() }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <mat-icon>task_alt</mat-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Completed Tasks</span>
+                        <span class="stat-value">{{ completedTasksCount() }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <mat-icon>pending_actions</mat-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Pending Tasks</span>
+                        <span class="stat-value">{{ pendingTasksCount() }}</span>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon purple">
+                        <mat-icon>groups</mat-icon>
+                    </div>
+                    <div class="stat-info">
+                        <span class="stat-label">Team Members</span>
+                        <span class="stat-value">{{ teamMembersCount() }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-grid">
+                
+                <section class="projects-section">
+                    <div class="section-header">
+                        <h3>Recent Projects</h3>
+                        <a routerLink="/projects" class="view-all">View All</a>
+                    </div>
+
+                    <div class="projects-list">
+                        @for (project of recentProjects(); track project.id) {
+                            <mat-card class="project-card" (click)="viewProject(project.id!)">
+                                <div class="card-decoration"></div>
+                                <mat-card-header>
+                                    <div class="project-icon-box">
+                                        <mat-icon>dashboard</mat-icon>
+                                    </div>
+                                    <div class="header-text">
+                                        <mat-card-title>{{ project.name }}</mat-card-title>
+                                        <mat-card-subtitle>Team #{{ project.team_id }}</mat-card-subtitle>
+                                    </div>
+                                </mat-card-header>
+                                
+                                <mat-card-content>
+                                    <div class="progress-wrapper">
+                                        <div class="progress-info">
+                                            <span>Progress</span>
+                                            <span>{{ getProjectProgress(project.id!) }}%</span>
+                                        </div>
+                                        <mat-progress-bar mode="determinate" [value]="getProjectProgress(project.id!)"></mat-progress-bar>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        } @empty {
+                            <div class="empty-state">
+                                <p>No active projects yet.</p>
+                            </div>
+                        }
+                    </div>
+                </section>
+
+                <section class="tasks-section">
+                    <div class="section-header">
+                        <h3>Upcoming Deadlines</h3>
+                        <a routerLink="/tasks" class="view-all">View All</a>
+                    </div>
+
+                    <div class="tasks-list">
+                        @for (task of upcomingTasks(); track task.id) {
+                            <div class="task-row">
+                                <div class="task-status-line" [ngClass]="task.priority.toLowerCase()"></div>
+                                <div class="task-info">
+                                    <span class="task-title">{{ task.title }}</span>
+                                    <span class="task-date">
+                                        <mat-icon>event</mat-icon> 
+                                        {{ task.due_date | date:'MMM d' }}
+                                    </span>
+                                </div>
+                                <span class="priority-pill" [ngClass]="task.priority.toLowerCase()">
+                                    {{ task.priority }}
+                                </span>
+                            </div>
+                        } @empty {
+                            <div class="empty-state">
+                                <p>No upcoming tasks! 🎉</p>
+                            </div>
+                        }
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+</div>

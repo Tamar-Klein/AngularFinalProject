@@ -10,6 +10,7 @@ import { authGuard } from './guards/auth-guard';
 import { LandingPage } from './components/landing-page/landing-page';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { TaskBoard } from './components/Tasks/task-board/task-board';
+import { Dashboard } from './components/dashboard/dashboard';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
@@ -28,6 +29,8 @@ export const routes: Routes = [
             { path: 'createTask', component: CreateTask },
             { path: 'projects/:projectId', component: ProjectDetails },
             { path: 'projects/:projectId/create-task', component: CreateTask },
+            {path: 'projects/:projectId/tasks', component: TaskBoard},
+            {path:"dashboard", component: Dashboard}
         ]
     },
 ];

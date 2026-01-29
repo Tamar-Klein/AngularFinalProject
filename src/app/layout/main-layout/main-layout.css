@@ -1,3 +1,9 @@
-.content-container {
-  padding: 20px; 
-}
+.app-container {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh; /* מוודא שהעמוד תופס את כל הגובה */
+    }
+
+    .main-content-area {
+      flex: 1; /* דוחף את הפוטר למטה אם אין מספיק תוכן */
+    }

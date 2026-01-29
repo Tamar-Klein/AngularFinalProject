@@ -8,7 +8,7 @@ import { Comments } from '../models/comments.model';
 })
 export class CommentsService {
   private http = inject(HttpClient);
-  private apiUrl = 'https://tasks-teacher-server.onrender.com/api/comments';
+  private apiUrl = 'http://localhost:3000/api/comments';
 
   private _comments = signal<Comments[]>([]);
   readonly comments = this._comments.asReadonly();

@@ -1,22 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../../../services/project-service';
-import { TaskService } from '../../../../services/task-service';
 import { Project } from '../../../../models/project.model';
-import { DatePipe } from '@angular/common';
-import { Comments } from '../../../comments/comments';
-import { TaskStatus } from '../../../../models/enums/taskStatus';
-import { TaskPriority } from '../../../../models/enums/taskPriority';
+import { DatePipe, CommonModule } from '@angular/common';
 import { TaskBoard } from '../../../Tasks/task-board/task-board';
+import { MatIconModule } from '@angular/material/icon'; // Added Icon Module
 
 @Component({
   selector: 'app-project-details',
-  imports: [DatePipe,TaskBoard],
+  standalone: true, // Make sure styling works correctly
+  imports: [CommonModule, DatePipe, TaskBoard, MatIconModule],
   templateUrl: './project-details.html',
   styleUrl: './project-details.css',
 })
 export class ProjectDetails {
- private route = inject(ActivatedRoute);
+  private route = inject(ActivatedRoute);
   private projectService = inject(ProjectService);
 
   project = signal<Project | null>(null);
