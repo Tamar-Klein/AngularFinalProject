@@ -48,15 +48,14 @@ export class Dashboard implements OnInit {
   tasks = this.taskService.tasks;
   teams = this.teamService.teams;
 
-  // --- Statistics ---
-  
+
   activeProjectsCount = computed(() => this.projects()?.length || 0);
 
-  completedTasksCount = computed(() => 
+  completedTasksCount = computed(() =>
     this.tasks()?.filter(t => t.status === TaskStatus.DONE).length || 0
   );
 
-  pendingTasksCount = computed(() => 
+  pendingTasksCount = computed(() =>
     this.tasks()?.filter(t => t.status !== TaskStatus.DONE).length || 0
   );
 
@@ -64,10 +63,8 @@ export class Dashboard implements OnInit {
     return this.teams()?.reduce((acc, team) => acc + (team.members_count || 0), 0) || 0;
   });
 
-  // --- Recent Data ---
 
   recentProjects = computed(() => {
-    // מביא את 3 הפרויקטים האחרונים (הנחה שהם מגיעים ממוינים או סתם הראשונים)
     return this.projects()?.slice(0, 3) || [];
   });
 
@@ -92,11 +89,10 @@ export class Dashboard implements OnInit {
     this.router.navigate(['/projects', id]);
   }
 
-  // חישוב התקדמות פרויקט (Mock logic)
   getProjectProgress(projectId: number): number {
     const projectTasks = this.tasks()?.filter(t => t.project_id === projectId);
     if (!projectTasks || projectTasks.length === 0) return 0;
-    
+
     const completed = projectTasks.filter(t => t.status === TaskStatus.DONE).length;
     return Math.round((completed / projectTasks.length) * 100);
   }

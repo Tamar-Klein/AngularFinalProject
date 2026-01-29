@@ -1,21 +1,18 @@
-/* הזרקת צבעים ישירות למערכת של Material 3 */
 :root {
-  --mat-sys-primary: #8b5cf6 !important;
-  --mat-sys-on-primary: #ffffff !important;
-  --mat-sys-primary-container: #ddd6fe !important;
-  --mat-sys-on-primary-container: #2e1065 !important;
+    --mat-sys-primary: #8b5cf6 !important;
+    --mat-sys-on-primary: #ffffff !important;
+    --mat-sys-primary-container: #ddd6fe !important;
+    --mat-sys-on-primary-container: #2e1065 !important;
 
-  --mat-sys-secondary: #d946ef !important;
-  --mat-sys-tertiary: #d946ef !important;
+    --mat-sys-secondary: #d946ef !important;
+    --mat-sys-tertiary: #d946ef !important;
 
-  /* פונטים */
-  --mat-sys-body-medium-font: 'Satoshi', sans-serif !important;
-  --mat-sys-headline-medium-font: 'Clash Display', sans-serif !important;
+    --mat-sys-body-medium-font: 'Satoshi', sans-serif !important;
+    --mat-sys-headline-medium-font: 'Clash Display', sans-serif !important;
 }
 
-/* תיקון צבע הכפתורים שמשתמשים ב-Primary */
-.mat-mdc-raised-button.mat-primary, 
+.mat-mdc-raised-button.mat-primary,
 .mat-mdc-flat-button.mat-primary {
-  --mdc-filled-button-container-color: #8b5cf6 !important;
-  --mdc-filled-button-label-text-color: #ffffff !important;
+    --mdc-filled-button-container-color: #8b5cf6 !important;
+    --mdc-filled-button-label-text-color: #ffffff !important;
 }

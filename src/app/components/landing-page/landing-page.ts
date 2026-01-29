@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,8 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './landing-page.css',
 })
 export class LandingPage {
-  constructor(private router: Router) {}
-
+  private router = inject(Router);
   features = [
     {
       icon: 'dashboard',

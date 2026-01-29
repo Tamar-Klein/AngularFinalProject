@@ -1,110 +1,105 @@
 @import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Satoshi:wght@400;500;700&display=swap');
 
 :host {
-  display: block;
-  width: 100%;
-  /* התיקון הקריטי: */
-  margin-top: auto; 
+    display: block;
+    width: 100%;
+    margin-top: auto;
 }
 
 .footer {
-  background: var(--footer-bg);
-  border-top: 1px solid var(--footer-border);
-  padding: 80px 40px 30px;
-  font-family: var(--font-body);
-  
-  /* מוודא שהפוטר לא יתכווץ וייצור חיתוך */
-  flex-shrink: 0; 
-  position: relative;
-  z-index: 5;
-}
-.footer-content {
-  max-width: 1400px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr; /* אותו גריד בדיוק */
-  gap: 60px;
-  margin-bottom: 60px;
+    background: var(--footer-bg);
+    border-top: 1px solid var(--footer-border);
+    padding: 80px 40px 30px;
+    font-family: var(--font-body);
+
+    flex-shrink: 0;
+    position: relative;
+    z-index: 5;
 }
 
-/* --- Brand Section --- */
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 60px;
+}
+
 .footer-brand {
-  max-width: 300px;
+    max-width: 300px;
 }
 
 .footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
 }
 
 .footer-logo mat-icon {
-  font-size: 28px;
-  width: 28px;
-  height: 28px;
-  color: #8b5cf6; /* אייקון סגול */
-  transform: rotate(-45deg);
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+    color: #8b5cf6;
+    transform: rotate(-45deg);
 }
 
 .footer-logo span {
-  font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 700;
-  /* גרדיאנט סגול כהה שיראה טוב על לבן */
-  background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #7c3aed 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .footer-tagline {
-  color: var(--text-body);
-  font-size: 15px;
-  margin: 0;
-  line-height: 1.6;
+    color: var(--text-body);
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.6;
 }
 
-/* --- Links Sections --- */
 .footer-links {
-  display: contents; /* כדי שהילדים יכנסו לגריד הראשי */
+    display: contents;
 }
 
 .footer-column h4 {
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 700;
-  margin-bottom: 24px;
-  margin-top: 0;
-  color: var(--text-header); /* כותרות כהות */
+    font-family: var(--font-display);
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    margin-top: 0;
+    color: var(--text-header);
 }
 
 .footer-column a {
-  display: block;
-  color: var(--text-body); /* לינקים באפור כהה */
-  text-decoration: none;
-  font-size: 14px;
-  margin-bottom: 14px;
-  transition: all 0.2s ease;
-  font-weight: 500;
+    display: block;
+    color: var(--text-body);
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 14px;
+    transition: all 0.2s ease;
+    font-weight: 500;
 }
 
 .footer-column a:hover {
-  color: var(--text-hover); /* סגול בהובר */
-  transform: translateX(2px); /* אפקט תזוזה קטן כמו במקור */
+    color: var(--text-hover);
+    transform: translateX(2px);
 }
 
-/* --- Bottom Section --- */
 .footer-bottom {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding-top: 30px;
-  border-top: 1px solid var(--footer-border); /* קו עליון עדין */
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 14px;
-  color: var(--text-body);
+    max-width: 1400px;
+    margin: 0 auto;
+    padding-top: 30px;
+    border-top: 1px solid var(--footer-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    color: var(--text-body);
 }
 
 .footer-bottom p {
@@ -112,19 +107,19 @@
 }
 
 .footer-legal {
-  display: flex;
-  gap: 24px;
-  align-items: center;
+    display: flex;
+    gap: 24px;
+    align-items: center;
 }
 
 .footer-legal a {
-  color: var(--text-body);
-  text-decoration: none;
-  transition: color 0.2s ease;
+    color: var(--text-body);
+    text-decoration: none;
+    transition: color 0.2s ease;
 }
 
 .footer-legal a:hover {
-  color: var(--text-hover);
+    color: var(--text-hover);
 }
 
 /* ============================================
@@ -132,36 +127,36 @@
    ============================================ */
 
 @media (max-width: 1024px) {
-  .footer-content {
-    gap: 40px;
-    grid-template-columns: 1fr 1fr; /* הופך ל-2 עמודות בטאבלט */
-  }
-  
-  .footer-brand {
-    grid-column: 1 / -1; /* הלוגו תופס רוחב מלא */
-    max-width: 100%;
-    margin-bottom: 20px;
-  }
+    .footer-content {
+        gap: 40px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+        max-width: 100%;
+        margin-bottom: 20px;
+    }
 }
 
 @media (max-width: 600px) {
-  .footer {
-    padding: 40px 20px 30px;
-  }
+    .footer {
+        padding: 40px 20px 30px;
+    }
 
-  .footer-content {
-    grid-template-columns: 1fr; /* עמודה אחת במובייל */
-    gap: 40px;
-  }
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
 
-  .footer-bottom {
-    flex-direction: column;
-    gap: 16px;
-    text-align: center;
-  }
-  
-  .footer-legal {
-    justify-content: center;
-    gap: 16px;
-  }
+    .footer-bottom {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+    }
+
+    .footer-legal {
+        justify-content: center;
+        gap: 16px;
+    }
 }

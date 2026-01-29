@@ -5,111 +5,110 @@
     </div>
 
     <div class="content-wrapper">
-        
+
         @if (!isCreating) {
-            <div class="page-header">
-                <div class="header-content">
-                    <h2 class="page-title">
-                        <span class="icon-bg"><mat-icon>groups</mat-icon></span>
-                        My Teams
-                    </h2>
-                    <p class="page-subtitle">Manage your squads and collaborate.</p>
-                </div>
-                <button mat-flat-button class="primary-btn create-btn" (click)="toggleCreate()">
-                    <mat-icon>add</mat-icon>
-                    New Team
-                </button>
+        <div class="page-header">
+            <div class="header-content">
+                <h2 class="page-title">
+                    <span class="icon-bg"><mat-icon>groups</mat-icon></span>
+                    My Teams
+                </h2>
+                <p class="page-subtitle">Manage your squads and collaborate.</p>
             </div>
+            <button mat-flat-button class="primary-btn create-btn" (click)="toggleCreate()">
+                <mat-icon>add</mat-icon>
+                New Team
+            </button>
+        </div>
 
-            <div class="teams-grid">
-                @for (team of teamsList(); track team.id) {
-                    <mat-card class="team-card">
-                        <div class="card-decoration"></div>
-                        
-                        <mat-card-header>
-                            <div mat-card-avatar class="team-avatar">
-                                {{ team.name.charAt(0).toUpperCase() }}
-                            </div>
-                            <mat-card-title>{{ team.name }}</mat-card-title>
-                            <mat-card-subtitle>Team ID: #{{ team.id }}</mat-card-subtitle>
-                        </mat-card-header>
+        <div class="teams-grid">
+            @for (team of teamsList(); track team.id) {
+            <mat-card class="team-card">
+                <div class="card-decoration"></div>
 
-                        <mat-card-content>
-                            <div class="info-item">
-                                <mat-icon>calendar_today</mat-icon>
-                                <span>Created: {{ team.created_at | date:'mediumDate' }}</span>
-                            </div>
-                            <div class="info-item">
-                                <mat-icon>person</mat-icon>
-                                <span>Members: {{ team.members_count }}</span>
-                            </div>
-                        </mat-card-content>
-
-                        <mat-card-actions class="card-actions">
-                            @if (!openedInvites.has(team.id!)) {
-                                <button mat-stroked-button class="action-btn invite-toggle" (click)="toggleInvite(team.id!)">
-                                    <mat-icon>person_add</mat-icon>
-                                    Invite
-                                </button>
-                            } @else {
-                                <div class="invite-panel">
-                                    <mat-form-field appearance="outline" class="compact-field" subscriptSizing="dynamic">
-                                        <input matInput #idInput type="text" placeholder="User ID" (input)="0">
-                                    </mat-form-field>
-                                    
-                                    <div class="invite-buttons">
-                                        <button mat-icon-button color="warn" (click)="toggleInvite(team.id!)" matTooltip="Cancel">
-                                            <mat-icon>close</mat-icon>
-                                        </button>
-                                        <button mat-mini-fab class="confirm-btn" 
-                                                (click)="addUser(team.id!, idInput.value)" 
-                                                [disabled]="!idInput.value || !isOnlyNumbers(idInput.value)">
-                                            <mat-icon>check</mat-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                                @if (idInput.value && !isOnlyNumbers(idInput.value)) {
-                                    <span class="error-text">Numbers only!</span>
-                                }
-                            }
-                        </mat-card-actions>
-                    </mat-card>
-                } @empty {
-                    <div class="empty-state">
-                        <div class="empty-icon">
-                            <mat-icon>diversity_3</mat-icon>
-                        </div>
-                        <h3>No teams yet</h3>
-                        <p>Create your first team to start collaborating!</p>
+                <mat-card-header>
+                    <div mat-card-avatar class="team-avatar">
+                        {{ team.name.charAt(0).toUpperCase() }}
                     </div>
-                }
+                    <mat-card-title>{{ team.name }}</mat-card-title>
+                    <mat-card-subtitle>Team ID: #{{ team.id }}</mat-card-subtitle>
+                </mat-card-header>
+
+                <mat-card-content>
+                    <div class="info-item">
+                        <mat-icon>calendar_today</mat-icon>
+                        <span>Created: {{ team.created_at | date:'mediumDate' }}</span>
+                    </div>
+                    <div class="info-item">
+                        <mat-icon>person</mat-icon>
+                        <span>Members: {{ team.members_count }}</span>
+                    </div>
+                </mat-card-content>
+
+                <mat-card-actions class="card-actions">
+                    @if (!openedInvites.has(team.id!)) {
+                    <button mat-stroked-button class="action-btn invite-toggle" (click)="toggleInvite(team.id!)">
+                        <mat-icon>person_add</mat-icon>
+                        Invite
+                    </button>
+                    } @else {
+                    <div class="invite-panel">
+                        <mat-form-field appearance="outline" class="compact-field" subscriptSizing="dynamic">
+                            <input matInput #idInput type="text" placeholder="User ID" (input)="0">
+                        </mat-form-field>
+
+                        <div class="invite-buttons">
+                            <button mat-icon-button color="warn" (click)="toggleInvite(team.id!)" matTooltip="Cancel">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                            <button mat-mini-fab class="confirm-btn" (click)="addUser(team.id!, idInput.value)"
+                                [disabled]="!idInput.value || !isOnlyNumbers(idInput.value)">
+                                <mat-icon>check</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    @if (idInput.value && !isOnlyNumbers(idInput.value)) {
+                    <span class="error-text">Numbers only!</span>
+                    }
+                    }
+                </mat-card-actions>
+            </mat-card>
+            } @empty {
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <mat-icon>diversity_3</mat-icon>
+                </div>
+                <h3>No teams yet</h3>
+                <p>Create your first team to start collaborating!</p>
             </div>
+            }
+        </div>
 
         } @else {
-            <div class="create-wrapper">
-                <mat-card class="create-card">
-                    <div class="card-decoration"></div>
-                    <mat-card-header>
-                        <mat-card-title>Create New Team</mat-card-title>
-                        <mat-card-subtitle>Give your team a unique name</mat-card-subtitle>
-                    </mat-card-header>
-                    
-                    <mat-card-content>
-                        <mat-form-field appearance="outline" class="full-width">
-                            <mat-label>Team Name</mat-label>
-                            <input matInput [(ngModel)]="newTeamName" placeholder="Ex: Development Squad" autofocus>
-                            <mat-icon matPrefix>groups</mat-icon>
-                        </mat-form-field>
-                    </mat-card-content>
+        <div class="create-wrapper">
+            <mat-card class="create-card">
+                <div class="card-decoration"></div>
+                <mat-card-header>
+                    <mat-card-title>Create New Team</mat-card-title>
+                    <mat-card-subtitle>Give your team a unique name</mat-card-subtitle>
+                </mat-card-header>
 
-                    <mat-card-actions align="end">
-                        <button mat-button (click)="toggleCreate()">Cancel</button>
-                        <button mat-flat-button class="primary-btn" (click)="saveTeam()" [disabled]="!newTeamName">
-                            Save Team
-                        </button>
-                    </mat-card-actions>
-                </mat-card>
-            </div>
+                <mat-card-content>
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>Team Name</mat-label>
+                        <input matInput [(ngModel)]="newTeamName" autofocus>
+                        <mat-icon matPrefix>groups</mat-icon>
+                    </mat-form-field>
+                </mat-card-content>
+
+                <mat-card-actions align="end">
+                    <button mat-button (click)="toggleCreate()">Cancel</button>
+                    <button mat-flat-button class="primary-btn" (click)="saveTeam()" [disabled]="!newTeamName">
+                        Save Team
+                    </button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
         }
     </div>
 </div>

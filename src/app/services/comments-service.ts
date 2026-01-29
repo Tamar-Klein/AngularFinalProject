@@ -9,9 +9,9 @@ import { environment } from '../../environments/environment';
 })
 export class CommentsService {
   private http = inject(HttpClient);
-private apiUrl = `${environment.apiUrl}/comments`;
+  private apiUrl = `${environment.apiUrl}/comments`;
 
-   private _comments = signal<Comments[]>([]);
+  private _comments = signal<Comments[]>([]);
   readonly comments = this._comments.asReadonly();
 
   getCommentsByTaskId(taskId: number): Observable<Comments[]> {

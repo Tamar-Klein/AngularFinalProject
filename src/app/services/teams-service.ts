@@ -9,19 +9,19 @@ import { environment } from '../../environments/environment';
 })
 export class TeamsService {
 
-private apiUrl = `${environment.apiUrl}/teams`;
+  private apiUrl = `${environment.apiUrl}/teams`;
   private http = inject(HttpClient);
 
   private _teams = signal<Team[]>([]);
   readonly teams = this._teams.asReadonly();
 
 
-getTeams(): Observable<Team[]> {
-  return this.http.get<Team[]>(this.apiUrl).pipe(
-    tap(teams => this._teams.set(teams)) 
-  );
-}
-createTeam(name: string): Observable<Team> {
+  getTeams(): Observable<Team[]> {
+    return this.http.get<Team[]>(this.apiUrl).pipe(
+      tap(teams => this._teams.set(teams))
+    );
+  }
+  createTeam(name: string): Observable<Team> {
     return this.http.post<Team>(this.apiUrl, { name }).pipe(
       tap(() => {
         this.getTeams().subscribe();
@@ -29,7 +29,7 @@ createTeam(name: string): Observable<Team> {
     );
   }
 
-    addUserToTeam(teamId: number, userId: number): Observable<void> {
+  addUserToTeam(teamId: number, userId: number): Observable<void> {
     return this.http.post<void>(`${this.apiUrl}/${teamId}/members`, { userId }).pipe(
       tap(() => {
         this.getTeams().subscribe();

@@ -34,7 +34,7 @@ export class Projects {
     this.router.navigate(['/projects', projectId]);
   }
   goToCreateProject() {
-    this.router.navigate(['/createProject']); 
+    this.router.navigate(['/createProject']);
   }
 
 }

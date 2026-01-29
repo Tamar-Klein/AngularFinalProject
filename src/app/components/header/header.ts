@@ -12,8 +12,8 @@ import { MatMenuModule } from '@angular/material/menu';
   selector: 'app-header',
   standalone: true,
   imports: [
-    CommonModule, 
-    RouterLink, 
+    CommonModule,
+    RouterLink,
     RouterLinkActive,
     MatIconModule,
     MatButtonModule,
@@ -27,8 +27,8 @@ export class Header {
   user = this.authService.currentUser;
   private router = inject(Router);
 
-  logout()  {
-   this.authService.logout();
-   this.router.navigate(['/landingPage']);
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/landingPage']);
   }
 }

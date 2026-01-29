@@ -6,7 +6,6 @@ import { ProjectService } from '../../../services/project-service';
 import { AuthService } from '../../../services/auth-service';
 import { CommonModule } from '@angular/common';
 
-// Material Imports
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,7 +22,6 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    RouterLink,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
@@ -44,7 +42,7 @@ export class CreateTask implements OnInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private snackBar = inject(MatSnackBar); // UI Feedback
+  private snackBar = inject(MatSnackBar);
 
   allProjects = this.projectService.projects;
   private user = this.authService.currentUser();
@@ -78,12 +76,11 @@ export class CreateTask implements OnInit {
       this.taskService.createTask(this.createTaskForm.getRawValue() as any).subscribe({
         next: () => {
           this.showSuccess('Task created successfully! 🎉');
-          // ניווט חכם: אם הגענו מתוך פרויקט, נחזור אליו. אחרת לרשימה הכללית.
           const currentProjectId = this.createTaskForm.getRawValue().projectId;
           if (currentProjectId) {
-             this.router.navigate(['/projects', currentProjectId]);
+            this.router.navigate(['/projects', currentProjectId]);
           } else {
-             this.router.navigate(['/tasks']);
+            this.router.navigate(['/tasks']);
           }
         },
         error: (err) => {
@@ -93,7 +90,6 @@ export class CreateTask implements OnInit {
     }
   }
 
-  // --- Helpers ---
   private showSuccess(msg: string) {
     this.snackBar.open(msg, 'Close', { duration: 3000, panelClass: ['success-snackbar'], verticalPosition: 'top' });
   }

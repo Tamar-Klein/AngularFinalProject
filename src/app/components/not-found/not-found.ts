@@ -11,7 +11,7 @@ import { Location } from '@angular/common';
   templateUrl: './not-found.html',
   styleUrl: './not-found.css'
 })
-export class NotFound{
+export class NotFound {
   private location = inject(Location);
   goBack() {
     this.location.back();

@@ -1,96 +1,94 @@
 <div class="board-wrapper">
-    <div class="background-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+
+  <div class="board-header">
+    <div class="header-text">
+      @if (!projectId()) {
+      <h1>Task Board</h1>
+      <p>Manage tasks across all projects</p>
+      } @else {
+      <h1>Project Tasks</h1>
+      <p>Track progress and manage workflow</p>
+      }
     </div>
+    <button mat-flat-button class="add-btn" (click)="goToCreateTask()">
+      <mat-icon>add</mat-icon>
+      New Task
+    </button>
+  </div>
 
-    <div class="board-header">
-        <div class="header-text">
-            @if (!projectId()) {
-                <h1>Task Board</h1>
-                <p>Manage tasks across all projects</p>
-            } @else {
-                <h1>Project Tasks</h1>
-                <p>Track progress and manage workflow</p>
-            }
-        </div>
-        <button mat-flat-button class="add-btn" (click)="goToCreateTask()">
-            <mat-icon>add</mat-icon>
-            New Task
-        </button>
-    </div>
+  <div class="board-container" cdkDropListGroup>
 
-    <div class="board-container" cdkDropListGroup>
+    @for (status of statusOptions; track status) {
+    <div class="board-column">
+      <div class="column-header">
+        <span class="status-indicator" [class]="status.toLowerCase()"></span>
+        <h2 class="column-title">{{ status }}</h2>
+        <span class="task-count">{{ boardColumns()[status].length }}</span>
+      </div>
 
-        @for (status of statusOptions; track status) {
-            <div class="board-column">
-                <div class="column-header">
-                    <span class="status-indicator" [class]="status.toLowerCase()"></span>
-                    <h2 class="column-title">{{ status }}</h2>
-                    <span class="task-count">{{ boardColumns()[status].length }}</span>
-                </div>
+      <div cdkDropList [id]="status" [cdkDropListData]="boardColumns()[status]"
+        (cdkDropListDropped)="drop($event, status)" class="tasks-list">
 
-                <div cdkDropList 
-                     [id]="status" 
-                     [cdkDropListData]="boardColumns()[status]"
-                     (cdkDropListDropped)="drop($event, status)" 
-                     class="tasks-list">
+        @for (task of boardColumns()[status]; track task.id) {
 
-                    @for (task of boardColumns()[status]; track task.id) {
-                        
-                        <div class="task-card" cdkDrag>
-                            
-                            <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>
+        <div class="task-card" cdkDrag>
 
-                            <div class="card-content-wrapper">
-                                <div class="card-header-row">
-                                    <h4 class="task-title">{{ task.title }}</h4>
-                                    
-                                    <button mat-icon-button class="delete-btn" (click)="onDeleteTask(task.id!)" (mousedown)="$event.stopPropagation()" matTooltip="Delete Task">
-                                        <mat-icon>delete_outline</mat-icon>
-                                    </button>
-                                </div>
+          <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>
 
-                                <p class="task-desc">
-                                    {{ task.description || 'No additional details.' }}
-                                </p>
+          <div class="card-content-wrapper">
+            <div class="card-header-row">
+              <h4 class="task-title">{{ task.title }}</h4>
 
-                                <div class="meta-row">
-                                    <div class="date-badge" matTooltip="Due Date">
-                                        <mat-icon>calendar_today</mat-icon>
-                                        {{ task.due_date | date:'d MMM' }}
-                                    </div>
-
-                                    <div class="priority-badge-wrapper" (mousedown)="$event.stopPropagation()">
-                                        <mat-form-field class="priority-badge" [ngClass]="'badge-' + task.priority.toLowerCase()">
-                                            <mat-select [value]="task.priority" (selectionChange)="onUpdatePriority(task.id!, $event.value)">
-                                                @for (priority of priorityOptions; track priority) {
-                                                    <mat-option [value]="priority">{{ priority }}</mat-option>
-                                                }
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-                            </div>
-
-                       <div class="card-footer">
-  <button mat-button class="comment-trigger" (click)="openComments(task.id!, task.title)">
-    <mat-icon>chat_bubble_outline</mat-icon>
-    Comments
-  </button>
-</div>
-
-                            <div *cdkDragPreview class="task-card-preview">
-                                <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>
-                                <h4 class="task-title">{{ task.title }}</h4>
-                            </div>
-                            
-                            <div *cdkDragPlaceholder class="task-card-placeholder"></div>
-
-                        </div>
-                    }
-                </div>
+              <button mat-icon-button class="delete-btn" (click)="onDeleteTask(task.id!)"
+                (mousedown)="$event.stopPropagation()" matTooltip="Delete Task">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
             </div>
+
+            <p class="task-desc">
+              {{ task.description || 'No additional details.' }}
+            </p>
+
+            <div class="meta-row">
+              <div class="date-badge" matTooltip="Due Date">
+                <mat-icon>calendar_today</mat-icon>
+                {{ task.due_date | date:'d MMM' }}
+              </div>
+
+              <div class="priority-badge-wrapper" (mousedown)="$event.stopPropagation()">
+                <mat-form-field class="priority-badge" [ngClass]="'badge-' + task.priority.toLowerCase()">
+                  <mat-select [value]="task.priority" (selectionChange)="onUpdatePriority(task.id!, $event.value)">
+                    @for (priority of priorityOptions; track priority) {
+                    <mat-option [value]="priority">{{ priority }}</mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button mat-button class="comment-trigger" (click)="openComments(task.id!, task.title)">
+              <mat-icon>chat_bubble_outline</mat-icon>
+              Comments
+            </button>
+          </div>
+
+          <div *cdkDragPreview class="task-card-preview">
+            <div class="priority-strip" [ngClass]="task.priority.toLowerCase()"></div>
+            <h4 class="task-title">{{ task.title }}</h4>
+          </div>
+
+          <div *cdkDragPlaceholder class="task-card-placeholder"></div>
+
+        </div>
         }
+      </div>
     </div>
+    }
+  </div>
 </div>

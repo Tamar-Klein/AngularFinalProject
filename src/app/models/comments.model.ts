@@ -1,5 +1,5 @@
-export interface Comments{
-         id?: number;
+export interface Comments {
+        id?: number;
         task_id: number;
         user_id?: number;
         body: string;

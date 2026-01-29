@@ -9,7 +9,6 @@ import { TaskStatus } from '../../../models/enums/taskStatus';
 import { TaskPriority } from '../../../models/enums/taskPriority';
 import { CommonModule, DatePipe } from '@angular/common';
 
-// Material Imports
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
@@ -26,7 +25,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   imports: [
     CommonModule,
     FormsModule,
-    Comments,
     DragDropModule,
     DatePipe,
     MatButtonModule,
@@ -42,7 +40,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
   templateUrl: './task-board.html',
   styleUrl: './task-board.css',
 })
-export class TaskBoard implements OnInit {
+export class TaskBoard {
   projectId = input<number>(0);
   private taskService = inject(TaskService);
   private router = inject(Router);
@@ -92,14 +90,12 @@ export class TaskBoard implements OnInit {
   }
 
   onDeleteTask(taskId: number) {
-    // פתיחת סנאק-בר עם כפתור פעולה
     const snack = this.snackBar.open('Are you sure you want to delete this task?', 'CONFIRM', {
-      duration: 5000, // נותן למשתמש 5 שניות להחליט
+      duration: 5000,
       panelClass: ['warning-snackbar']
     });
 
     snack.onAction().subscribe(() => {
-      // הפעולה תתבצע רק אם המשתמש לחץ על CONFIRM
       this.taskService.deleteTaskById(taskId).subscribe({
         next: () => {
           this.projectId() ?
@@ -116,7 +112,6 @@ export class TaskBoard implements OnInit {
     this.taskService.patchTaskStatusById(taskId, newStatus).subscribe();
   }
 
-  // Updated to support Material Select
   onUpdatePriority(taskId: number, newPriority: TaskPriority) {
     this.taskService.patchTaskPriorityById(taskId, newPriority).subscribe();
   }

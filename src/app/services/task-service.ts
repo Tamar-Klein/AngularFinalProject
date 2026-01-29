@@ -24,7 +24,6 @@ export class TaskService {
   }
   getTasksByProjectId(projectId: number): Observable<Task[]> {
     const params = new HttpParams().set('projectId', projectId);
-
     return this.http.get<any[]>(this.apiUrl, { params }).pipe(
       tap(tasks => this._tasks.set(tasks))
     );
@@ -60,6 +59,4 @@ export class TaskService {
       }
       ));
   }
-
-
 }

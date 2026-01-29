@@ -1,7 +1,7 @@
 import { TaskPriority } from "./enums/taskPriority";
 import { TaskStatus } from "./enums/taskStatus";
 
-export interface Task{
+export interface Task {
         id?: number;
         project_id: number;
         title: string;

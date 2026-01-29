@@ -1,25 +1,45 @@
-/* You can add global styles to this file, and also import other style files */
-
-html, body { 
-  height: auto !important;
+html,
+body {
+    height: auto !important;
     min-height: 100%;
- }
-body {margin: 0; 
-    font-family: Roboto, "Helvetica Neue", sans-serif;
-    overflow-x: hidden; /* למניעת גלילה לצדדים */ }
+}
 
-/* Comments Dialog Styles */
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    overflow-x: hidden;
+}
+
 ::ng-deep .comments-dialog .mat-mdc-dialog-container {
-  padding: 0 !important;
-  max-height: 90vh !important;
-  height: auto !important;
-  display: flex !important;
-  flex-direction: column !important;
+    padding: 0 !important;
+    max-height: 90vh !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
 }
 
 ::ng-deep .comments-dialog .mat-mdc-dialog-content {
-  padding: 0 !important;
+    padding: 0 !important;
 }
+
 ::ng-deep .comments-dialog .mat-mdc-dialog-actions {
-  padding: 0 !important;
+    padding: 0 !important;
+}
+
+.mat-mdc-select-panel {
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 8px !important;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.mat-mdc-option {
+    border-radius: 8px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    margin-bottom: 2px !important;
+}
+
+.mat-mdc-option:hover {
+    background: #f8fafc !important;
 }

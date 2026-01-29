@@ -1,9 +1,17 @@
 .app-container {
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh; /* מוודא שהעמוד תופס את כל הגובה */
-    }
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: auto !important;
+}
 
-    .main-content-area {
-      flex: 1; /* דוחף את הפוטר למטה אם אין מספיק תוכן */
-    }
+.main-content-area {
+  flex: 1 0 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+app-footer {
+  flex-shrink: 0;
+}

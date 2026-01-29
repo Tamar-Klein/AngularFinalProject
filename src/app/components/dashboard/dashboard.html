@@ -1,5 +1,5 @@
 <div class="dashboard-layout">
-    
+
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo-section">
@@ -45,19 +45,19 @@
                     <div class="user-role">Admin</div>
                 </div>
             </div>
-          
+
         </div>
     </aside>
 
     <main class="main-content">
-        
+
         <div class="background-shapes">
             <div class="shape shape-1"></div>
             <div class="shape shape-2"></div>
         </div>
 
         <div class="content-wrapper">
-            
+
             <div class="dashboard-header">
                 <div class="header-text">
                     <h1 class="page-title">Hello, {{ user()?.name }}! 👋</h1>
@@ -70,7 +70,7 @@
             </div>
 
             <div class="stats-grid">
-                
+
                 <div class="stat-card">
                     <div class="stat-icon purple">
                         <mat-icon>folder</mat-icon>
@@ -113,7 +113,7 @@
             </div>
 
             <div class="main-grid">
-                
+
                 <section class="projects-section">
                     <div class="section-header">
                         <h3>Recent Projects</h3>
@@ -122,32 +122,33 @@
 
                     <div class="projects-list">
                         @for (project of recentProjects(); track project.id) {
-                            <mat-card class="project-card" (click)="viewProject(project.id!)">
-                                <div class="card-decoration"></div>
-                                <mat-card-header>
-                                    <div class="project-icon-box">
-                                        <mat-icon>dashboard</mat-icon>
+                        <mat-card class="project-card" (click)="viewProject(project.id!)">
+                            <div class="card-decoration"></div>
+                            <mat-card-header>
+                                <div class="project-icon-box">
+                                    <mat-icon>dashboard</mat-icon>
+                                </div>
+                                <div class="header-text">
+                                    <mat-card-title>{{ project.name }}</mat-card-title>
+                                    <mat-card-subtitle>Team #{{ project.team_id }}</mat-card-subtitle>
+                                </div>
+                            </mat-card-header>
+
+                            <mat-card-content>
+                                <div class="progress-wrapper">
+                                    <div class="progress-info">
+                                        <span>Progress</span>
+                                        <span>{{ getProjectProgress(project.id!) }}%</span>
                                     </div>
-                                    <div class="header-text">
-                                        <mat-card-title>{{ project.name }}</mat-card-title>
-                                        <mat-card-subtitle>Team #{{ project.team_id }}</mat-card-subtitle>
-                                    </div>
-                                </mat-card-header>
-                                
-                                <mat-card-content>
-                                    <div class="progress-wrapper">
-                                        <div class="progress-info">
-                                            <span>Progress</span>
-                                            <span>{{ getProjectProgress(project.id!) }}%</span>
-                                        </div>
-                                        <mat-progress-bar mode="determinate" [value]="getProjectProgress(project.id!)"></mat-progress-bar>
-                                    </div>
-                                </mat-card-content>
-                            </mat-card>
+                                    <mat-progress-bar mode="determinate"
+                                        [value]="getProjectProgress(project.id!)"></mat-progress-bar>
+                                </div>
+                            </mat-card-content>
+                        </mat-card>
                         } @empty {
-                            <div class="empty-state">
-                                <p>No active projects yet.</p>
-                            </div>
+                        <div class="empty-state">
+                            <p>No active projects yet.</p>
+                        </div>
                         }
                     </div>
                 </section>
@@ -160,23 +161,23 @@
 
                     <div class="tasks-list">
                         @for (task of upcomingTasks(); track task.id) {
-                            <div class="task-row">
-                                <div class="task-status-line" [ngClass]="task.priority.toLowerCase()"></div>
-                                <div class="task-info">
-                                    <span class="task-title">{{ task.title }}</span>
-                                    <span class="task-date">
-                                        <mat-icon>event</mat-icon> 
-                                        {{ task.due_date | date:'MMM d' }}
-                                    </span>
-                                </div>
-                                <span class="priority-pill" [ngClass]="task.priority.toLowerCase()">
-                                    {{ task.priority }}
+                        <div class="task-row">
+                            <div class="task-status-line" [ngClass]="task.priority.toLowerCase()"></div>
+                            <div class="task-info">
+                                <span class="task-title">{{ task.title }}</span>
+                                <span class="task-date">
+                                    <mat-icon>event</mat-icon>
+                                    {{ task.due_date | date:'MMM d' }}
                                 </span>
                             </div>
+                            <span class="priority-pill" [ngClass]="task.priority.toLowerCase()">
+                                {{ task.priority }}
+                            </span>
+                        </div>
                         } @empty {
-                            <div class="empty-state">
-                                <p>No upcoming tasks! 🎉</p>
-                            </div>
+                        <div class="empty-state">
+                            <p>No upcoming tasks! 🎉</p>
+                        </div>
                         }
                     </div>
                 </section>

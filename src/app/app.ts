@@ -11,15 +11,15 @@ import { AuthService } from './services/auth-service';
 })
 export class App {
   protected readonly title = signal('project');
-private authService = inject(AuthService);
+  private authService = inject(AuthService);
 
   ngOnInit() {
     const token = this.authService.getToken();
     if (token) {
       this.authService.getCurrentUser().subscribe({
-        error: () => this.authService.logout() 
+        error: () => this.authService.logout()
       });
     }
 
-}
+  }
 }

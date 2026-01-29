@@ -1,6 +1,6 @@
 import { User } from "./user.models";
 
 export interface AuthResponse {
-  user: User;    
+  user: User;
   token: string;
 }

@@ -15,9 +15,7 @@
     align-items: center;
     height: 72px;
     padding: 0 40px;
-    
-    /* Dark Background matching the image */
-    background-color: #1e293b; /* או #0f172a בהתאם להעדפה כהה יותר */
+    background-color: #1e293b;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
     font-family: 'Satoshi', sans-serif;
@@ -36,7 +34,7 @@
     font-size: 28px;
     width: 28px;
     height: 28px;
-    color: #a78bfa; /* Light Purple Icon */
+    color: #a78bfa;
     transform: rotate(-45deg);
 }
 
@@ -45,7 +43,6 @@
     font-size: 22px;
     font-weight: 600;
     color: white;
-    /* Gradient Text Effect */
     background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -67,7 +64,8 @@
 
 .nav-links a {
     text-decoration: none;
-    color: #94a3b8; /* Slate 400 - Muted Text */
+    color: #94a3b8;
+    /* Slate 400 - Muted Text */
     font-size: 15px;
     font-weight: 500;
     transition: all 0.2s ease;
@@ -79,7 +77,6 @@
     color: white;
 }
 
-/* Active State (Underline or Glow) */
 .active-link {
     color: white !important;
     font-weight: 600;
@@ -112,17 +109,16 @@
 }
 
 .user-greeting {
-    color: #cbd5e1; /* Slate 300 */
+    color: #cbd5e1;
     font-size: 14px;
 }
 
-/* The Button - Exactly like "Get Started Free" */
 .logout-btn {
     background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
     color: white;
     border: none;
     padding: 10px 24px;
-    border-radius: 8px; /* Slightly rounded */
+    border-radius: 8px;
     font-family: 'Satoshi', sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -143,10 +139,29 @@
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 768px) {
-    .navbar { padding: 0 16px; height: 64px; }
-    .brand-text { display: none; } /* Hide logo text on mobile */
-    .user-greeting { display: none; }
-    .nav-links { gap: 16px; }
-    .nav-links a { font-size: 13px; }
-    .logout-btn { padding: 8px 16px; font-size: 13px; }
+    .navbar {
+        padding: 0 16px;
+        height: 64px;
+    }
+
+    .brand-text {
+        display: none;
+    }
+
+    .user-greeting {
+        display: none;
+    }
+
+    .nav-links {
+        gap: 16px;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    .logout-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
 }

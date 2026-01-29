@@ -1,76 +1,76 @@
 <div class="projects-container">
-    <div class="background-shapes">
-        <div class="shape shape-1"></div>
-        <div class="shape shape-2"></div>
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+
+  <div class="content-wrapper">
+
+    <div class="page-header">
+      <div class="header-content">
+        <h2 class="page-title">
+          <span class="icon-bg"><mat-icon>folder_special</mat-icon></span>
+          My Projects
+        </h2>
+        <p class="page-subtitle">Track progress and hit your deadlines.</p>
+      </div>
+
+      <button mat-flat-button class="primary-btn" (click)="goToCreateProject()">
+        <mat-icon>add</mat-icon>
+        New Project
+      </button>
     </div>
 
-    <div class="content-wrapper">
-        
-        <div class="page-header">
-            <div class="header-content">
-                <h2 class="page-title">
-                    <span class="icon-bg"><mat-icon>folder_special</mat-icon></span>
-                    My Projects
-                </h2>
-                <p class="page-subtitle">Track progress and hit your deadlines.</p>
+    <div class="projects-grid">
+      @for (item of projectsList() || []; track item.id) {
+      <mat-card class="project-card" (click)="detailProject(item.id!)">
+        <div class="card-decoration"></div>
+
+        <mat-card-content>
+          <div class="project-icon-box">
+            <mat-icon>dashboard</mat-icon>
+          </div>
+
+          <mat-card-title>{{ item.name }}</mat-card-title>
+
+          <div class="team-badge">
+            <mat-icon>groups</mat-icon>
+            Team #{{ item.team_id }}
+          </div>
+
+          <p class="project-desc">
+            {{ item.description || 'No description provided for this project.' }}
+          </p>
+
+          <div class="progress-section">
+            <div class="progress-label">
+              <span>Progress</span>
+              <span>{{ (item.id! * 10) % 100 }}%</span>
             </div>
-            
-            <button mat-flat-button class="primary-btn" (click)="goToCreateProject()">
-                <mat-icon>add</mat-icon>
-                New Project
-            </button>
+            <div class="progress-track">
+              <div class="progress-fill" [style.--p-width.%]="(item.id! * 10) % 100"></div>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-flat-button class="open-btn" (click)="detailProject(item.id!); $event.stopPropagation()">
+            View Details
+            <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+          </button>
+        </mat-card-actions>
+      </mat-card>
+      }
+      @empty {
+      <div class="empty-state">
+        <div class="empty-icon">
+          <mat-icon>folder_off</mat-icon>
         </div>
-
-        <div class="projects-grid">
-            @for (item of projectsList() || []; track item.id) {
-                <mat-card class="project-card" (click)="detailProject(item.id!)">
-                    <div class="card-decoration"></div>
-                    
-                    <mat-card-content>
-                        <div class="project-icon-box">
-                            <mat-icon>dashboard</mat-icon>
-                        </div>
-
-                        <mat-card-title>{{ item.name }}</mat-card-title>
-                        
-                        <div class="team-badge">
-                            <mat-icon>groups</mat-icon>
-                            Team #{{ item.team_id }}
-                        </div>
-
-                        <p class="project-desc">
-                            {{ item.description || 'No description provided for this project.' }}
-                        </p>
-
-                        <div class="progress-section">
-                            <div class="progress-label">
-                                <span>Progress</span>
-                                <span>{{ (item.id! * 10) % 100 }}%</span>
-                            </div>
-                            <div class="progress-track">
-                                <div class="progress-fill" [style.--p-width.%]="(item.id! * 10) % 100"></div>
-                            </div>
-                        </div>
-                    </mat-card-content>
-
-                    <mat-card-actions>
-                        <button mat-flat-button class="open-btn" (click)="detailProject(item.id!); $event.stopPropagation()">
-                            View Details
-                            <mat-icon iconPositionEnd>arrow_forward</mat-icon>
-                        </button>
-                    </mat-card-actions>
-                </mat-card>
-            } 
-            @empty {
-                <div class="empty-state">
-                    <div class="empty-icon">
-                        <mat-icon>folder_off</mat-icon>
-                    </div>
-                    <h3>No projects found</h3>
-                    <p>It seems you are not part of any project yet.</p>
-                    <button mat-button color="primary" (click)="goToCreateProject()">Create your first project</button>
-                </div>
-            }
-        </div>
+        <h3>No projects found</h3>
+        <p>It seems you are not part of any project yet.</p>
+        <button mat-button color="primary" (click)="goToCreateProject()">Create your first project</button>
+      </div>
+      }
     </div>
+  </div>
 </div>

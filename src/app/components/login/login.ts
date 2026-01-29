@@ -25,7 +25,7 @@
 //   onSubmit() {
 //     if (this.loginForm.valid) {
 //      this.authService.login(this.loginForm.getRawValue()).subscribe({
-      
+
 //         next: (response) => {
 //           alert(`You connected successfully ${response.user.name}`);
 //             this.router.navigate(['/projects']);
@@ -68,8 +68,8 @@ import { CommonModule } from '@angular/common';
     MatSnackBarModule,
     MatProgressSpinnerModule
   ],
-   templateUrl: './login.html',
-   styleUrl: './login.css',
+  templateUrl: './login.html',
+  styleUrl: './login.css',
 })
 export class Login {
   private fb = inject(FormBuilder);

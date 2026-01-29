@@ -58,10 +58,10 @@ export class Register {
 
   onSubmit() {
     if (this.userForm.valid) {
-      this.isLoading = true; 
-      
+      this.isLoading = true;
+
       const { name, email, password } = this.userForm.getRawValue();
-      
+
       this.authService.register({ name, email, password }).subscribe({
         next: (response) => {
           this.isLoading = false;
@@ -75,7 +75,7 @@ export class Register {
         error: (err) => {
           this.isLoading = false;
           const errorMsg = err.error?.message || 'An unexpected error occurred.';
-          
+
           this.snackBar.open(`❌ ${errorMsg}`, 'Close', {
             duration: 5000,
             panelClass: ['error-snackbar'],

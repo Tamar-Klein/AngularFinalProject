@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Satoshi:wght@400;500;700&display=swap');
 
 :host {
-    /* --- Theme Variables --- */
     --bg-page: #ffffff;
     --grid-line: rgba(0, 0, 0, 0.04);
     
@@ -38,7 +37,7 @@
         linear-gradient(var(--grid-line) 1px, transparent 1px),
         linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 50px 50px;
-    padding: 20px; /* רווח למובייל */
+    padding: 20px;
 }
 
 /* ================= BACKGROUND SHAPES ================= */

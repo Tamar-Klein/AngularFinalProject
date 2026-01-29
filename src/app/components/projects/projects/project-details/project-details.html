@@ -1,41 +1,59 @@
 <div class="background-shapes">
-    <div class="shape shape-1"></div>
-    <div class="shape shape-2"></div>
+  <div class="shape shape-1"></div>
+  <div class="shape shape-2"></div>
+  <div class="shape shape-3"></div>
 </div>
 
 @if (project(); as p) {
-    <div class="project-header-wrapper">
-        <div class="header-content">
-            <div class="info">
-                <h1>{{ p.name }}</h1>
-                <p class="description">{{ p.description || 'No description provided.' }}</p>
-                
-                <div class="meta">
-                    <span class="badge" [attr.data-status]="p.status">
-                        <mat-icon class="meta-icon">circle</mat-icon>
-                        {{ p.status }}
-                    </span>
-                    
-                    <span class="team-badge">
-                        <mat-icon class="meta-icon">groups</mat-icon>
-                        Team #{{ p.team_id }}
-                    </span>
-                    
-                    <span class="date-badge">
-                        <mat-icon class="meta-icon">calendar_today</mat-icon>
-                        Created: {{ p.created_at | date:'mediumDate' }}
-                    </span>
-                </div>
-            </div>
+<header class="project-header">
+  <div class="header-glass-card">
+    <div class="header-top-row">
+      <div class="title-group">
+        <div class="project-icon">
+          <mat-icon>folder_special</mat-icon>
         </div>
+        <div class="text-info">
+          <span class="category-label">Project Overview</span>
+          <h1>{{ p.name }}</h1>
+        </div>
+      </div>
+
+      <div class="status-pill" [attr.data-status]="p.status">
+        <span class="pulse-dot"></span>
+        {{ p.status }}
+      </div>
     </div>
 
-    <section class="tasks-section">
-        <app-task-board [projectId]="p.id!"></app-task-board>
-    </section>
+    <p class="project-description">{{ p.description || 'Seamlessly manage your workflow and track progress.' }}</p>
+
+    <div class="meta-footer">
+      <div class="meta-item team">
+        <div class="avatar-stack">
+          <div class="mini-avatar">#{{ p.team_id }}</div>
+        </div>
+        <span class="meta-label">Assigned Team</span>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="meta-item date">
+        <mat-icon>calendar_today</mat-icon>
+        <div class="date-info">
+          <span class="meta-label">Created on</span>
+          <strong>{{ p.created_at | date:'longDate' }}</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="tasks-container-main">
+  <app-task-board [projectId]="p.id!"></app-task-board>
+</main>
 
 } @else {
-    <div class="loading-state">
-        <p>Loading project details...</p>
-    </div>
+<div class="loading-container">
+  <div class="spinner"></div>
+  <p>Fetching project data...</p>
+</div>
 }

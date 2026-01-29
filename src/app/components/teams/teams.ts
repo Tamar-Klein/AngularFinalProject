@@ -1,9 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { TeamsService } from '../../services/teams-service';
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
-// Material Imports
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -16,7 +15,6 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'teams',
   standalone: true,
   imports: [
-    CommonModule,
     FormsModule,
     MatButtonModule,
     MatIconModule,
@@ -24,15 +22,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatFormFieldModule,
     MatCardModule,
     MatSnackBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    DatePipe
   ],
   templateUrl: './teams.html',
   styleUrl: './teams.css',
 })
-export class Teams implements OnInit {
+export class Teams {
 
   private teamsService = inject(TeamsService);
-  private snackBar = inject(MatSnackBar); // הזרקת ה-SnackBar
+  private snackBar = inject(MatSnackBar);
 
   teamsList = this.teamsService.teams;
   isCreating = false;
@@ -90,11 +89,10 @@ export class Teams implements OnInit {
     return /^\d+$/.test(value);
   }
 
-  // --- Proactive Helper Methods for SnackBar ---
   private showSuccess(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 3000,
-      panelClass: ['success-snackbar'], // עיצוב ירוק (מוגדר ב-styles.css הגלובלי)
+      panelClass: ['success-snackbar'],
       horizontalPosition: 'center',
       verticalPosition: 'bottom'
     });
@@ -103,7 +101,7 @@ export class Teams implements OnInit {
   private showError(message: string) {
     this.snackBar.open(message, 'Close', {
       duration: 4000,
-      panelClass: ['error-snackbar'], // עיצוב אדום (מוגדר ב-styles.css הגלובלי)
+      panelClass: ['error-snackbar'],
       horizontalPosition: 'center',
       verticalPosition: 'bottom'
     });

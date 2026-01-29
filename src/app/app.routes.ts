@@ -21,7 +21,7 @@ export const routes: Routes = [
         path: '', pathMatch: 'full',
         redirectTo: () => {
             const authService = inject(AuthService);
-            return authService.isLoggedIn()|| authService.getToken()? 'dashboard' : 'landingPage';
+            return authService.isLoggedIn() || authService.getToken() ? 'dashboard' : 'landingPage';
         }
     }, { path: 'landingPage', component: LandingPage, canActivate: [guestGuard] },
     { path: 'login', component: Login, canActivate: [guestGuard] },

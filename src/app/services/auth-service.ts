@@ -8,10 +8,10 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
-private apiUrl = `${environment.apiUrl}/auth`;
+  private apiUrl = `${environment.apiUrl}/auth`;
   private http = inject(HttpClient);
 
-  private _currentUser = signal<User | null>(null); 
+  private _currentUser = signal<User | null>(null);
   currentUser = this._currentUser.asReadonly();
 
   getCurrentUser(): Observable<User> {
@@ -21,7 +21,7 @@ private apiUrl = `${environment.apiUrl}/auth`;
       })
     );
   }
-   register(userData: User): Observable<AuthResponse> {
+  register(userData: User): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData).pipe(
       tap(response => {
         sessionStorage.setItem('token', response.token);
@@ -37,15 +37,13 @@ private apiUrl = `${environment.apiUrl}/auth`;
       })
     );
   }
-    logout() {
+  logout() {
     sessionStorage.removeItem('token');
-   this._currentUser.set(null);
-   
+    this._currentUser.set(null);
+
   }
 
-
-
-readonly isLoggedIn = computed(() => !!this._currentUser());
+  readonly isLoggedIn = computed(() => !!this._currentUser());
 
   getToken(): string | null {
     return sessionStorage.getItem('token');
