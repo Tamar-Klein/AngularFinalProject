@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Project } from '../models/project.model';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProjectService {
-  private apiUrl = "https://tasks-teacher-server.onrender.com/api/projects";
+private apiUrl = `${environment.apiUrl}/projects`;
   private http = inject(HttpClient);
 
 

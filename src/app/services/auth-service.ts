@@ -3,26 +3,28 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { User } from '../models/user.models';
 import { AuthResponse } from '../models/authResponse.model';
-
+import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = "https://tasks-teacher-server.onrender.com/api/auth";
+private apiUrl = `${environment.apiUrl}/auth`;
   private http = inject(HttpClient);
 
-  private _currentUser = signal<User | null>(
-    JSON.parse(sessionStorage.getItem('user') || 'null')
-  );
+  private _currentUser = signal<User | null>(null); 
+  currentUser = this._currentUser.asReadonly();
 
-  currentUser= this._currentUser.asReadonly();
-
-  register(userData: User): Observable<AuthResponse> {
+  getCurrentUser(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/me`).pipe(
+      tap(user => {
+        this._currentUser.set(user);
+      })
+    );
+  }
+   register(userData: User): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.apiUrl}/register`, userData).pipe(
       tap(response => {
         sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('user', JSON.stringify(response.user));
-
         this._currentUser.set(response.user);
       })
     );
@@ -31,19 +33,17 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
         sessionStorage.setItem('token', response.token);
-        sessionStorage.setItem('user', JSON.stringify(response.user));
-
         this._currentUser.set(response.user);
       })
     );
   }
-
-  logout() {
+    logout() {
     sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
    this._currentUser.set(null);
    
   }
+
+
 
 readonly isLoggedIn = computed(() => !!this._currentUser());
 

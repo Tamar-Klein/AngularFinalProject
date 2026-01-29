@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Team } from '../models/team.model';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TeamsService {
 
-  private apiUrl = "https://tasks-teacher-server.onrender.com/api/teams";
+private apiUrl = `${environment.apiUrl}/teams`;
   private http = inject(HttpClient);
 
   private _teams = signal<Team[]>([]);

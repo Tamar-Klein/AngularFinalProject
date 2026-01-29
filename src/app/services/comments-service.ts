@@ -2,15 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Comments } from '../models/comments.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CommentsService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/api/comments';
+private apiUrl = `${environment.apiUrl}/comments`;
 
-  private _comments = signal<Comments[]>([]);
+   private _comments = signal<Comments[]>([]);
   readonly comments = this._comments.asReadonly();
 
   getCommentsByTaskId(taskId: number): Observable<Comments[]> {

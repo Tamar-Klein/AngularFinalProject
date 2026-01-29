@@ -1,59 +1,88 @@
-# Project
+# TaskPilot 🚀
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.2.
+A full-stack task management application designed to help teams collaborate efficiently. Built with **Angular** and **Node.js**.
 
-## Development server
+## 🌐 Live Demo
+- **Client (Frontend):** [https://taskpilot-zbf1.onrender.com](https://taskpilot-zbf1.onrender.com)
+- **Server (Backend):** [https://tasks-teacher-server.onrender.com](https://tasks-teacher-server.onrender.com)
 
-To start a local development server, run:
+## ✨ Features
+- **User Authentication:** Secure login and registration using JWT.
+- **Persistent Session:** Uses `/api/auth/me` to verify user status on page refresh.
+- **Task Management:** Create, update, and delete tasks.
+- **Team Collaboration:** Manage teams and assign tasks to users.
+- **Responsive Design:** Works seamlessly on desktop and mobile.
+- **Modern UI:** Built with Angular Material and Signals for state management.
 
+## 🛠️ Tech Stack
+
+### Frontend (Client)
+- **Framework:** Angular (v17+) using Signals API.
+- **UI Components:** Angular Material.
+- **Environment Management:** Automated file replacements for Local vs. Production URLs.
+- **Deployment:** Render Static Site.
+
+### Backend (Server)
+- **Runtime:** Node.js & Express.js.
+- **Database:** SQLite (managed via `better-sqlite3`).
+- **Authentication:** JSON Web Tokens (JWT) with secure Middleware.
+- **Deployment:** Render Web Service.
+
+## 📂 Project Structure
 ```bash
-ng serve
-```
+TaskPilot/
+├── client/                 # Angular Frontend
+│   ├── src/
+│   │   ├── app/            # Components, Services, Guards, Interceptors
+│   │   ├── environments/   # Dev & Prod configuration files
+│   │   └── assets/         # Global styles and assets
+├── server/                 # Node.js Backend
+│   ├── controllers/        # Auth & Task logic
+│   ├── routes/             # Express Route definitions
+│   ├── middleware/         # JWT Authentication logic
+│   └── database.sqlite     # SQLite Database
+└── README.md
+⚙️ Installation & Local Setup
+1. Clone the Repository
+Bash
+git clone [https://github.com/Tamar-Klein/AngularFinalProject.git](https://github.com/Tamar-Klein/AngularFinalProject.git)
+cd AngularFinalProject
+2. Backend Setup
+Bash
+cd server
+npm install
+npm start
+Runs on http://localhost:3000
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+3. Frontend Setup
+Bash
+cd client
+npm install
+npm start
+Runs on http://localhost:4200
 
-## Code scaffolding
+🔌 API Endpoints
+| Method | Endpoint | Description | | | | | | POST | /api/auth/register | Register a new user & get token | | POST | /api/auth/login | Authenticate user & get token | | GET | /api/auth/me | (New) Verify token and get current user info | | GET | /api/tasks | Retrieve all tasks | | POST | /api/tasks | Create a new task | | DELETE | /api/tasks/:id | Remove a task |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+🚀 Deployment
+This project is deployed on Render.
 
-```bash
-ng generate component component-name
-```
+Frontend: Configured as a Static Site with a rewrite rule (/* -> /index.html) to support Angular routing.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Backend: Configured as a Web Service.
 
-```bash
-ng generate --help
-```
+Communication: A Reverse Proxy rule is set up on the frontend to forward /api requests to the backend, avoiding CORS issues.
 
-## Building
+🔜 Future Improvements
+[ ] Add drag-and-drop support for tasks (Kanban style).
 
-To build the project run:
+[ ] Implement email notifications.
 
-```bash
-ng build
-```
+[ ] Add dark mode toggle.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+[ ] Unit testing with Jasmine/Karma.
 
-## Running unit tests
+👤 Author
+Tamar Klein
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+GitHub: @Tamar-Klein

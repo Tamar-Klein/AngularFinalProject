@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth-service';
 
 
 @Component({
@@ -10,6 +11,15 @@ import { RouterOutlet } from '@angular/router';
 })
 export class App {
   protected readonly title = signal('project');
+private authService = inject(AuthService);
 
+  ngOnInit() {
+    const token = this.authService.getToken();
+    if (token) {
+      this.authService.getCurrentUser().subscribe({
+        error: () => this.authService.logout() 
+      });
+    }
 
+}
 }
