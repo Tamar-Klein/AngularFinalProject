@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 })
 export class TeamsService {
 
-  private apiUrl = "http://localhost:3000/api/teams";
+  private apiUrl = "https://tasks-teacher-server.onrender.com/api/teams";
   private http = inject(HttpClient);
 
   private _teams = signal<Team[]>([]);

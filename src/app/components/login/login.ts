@@ -108,7 +108,7 @@ export class Login {
         },
         error: (err) => {
           this.isLoading = false;
-          this.errorMsg = err.error?.message || 'Login failed. Please try again.';
+          this.errorMsg = err.error?.message || 'The email or password is incorrect. Please try again.';
           this.snackBar.open(
             `❌ ${this.errorMsg}`,
             'Close',

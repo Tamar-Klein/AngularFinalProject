@@ -8,7 +8,7 @@ import { AuthResponse } from '../models/authResponse.model';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = "http://localhost:3000/api/auth";
+  private apiUrl = "https://tasks-teacher-server.onrender.com/api/auth";
   private http = inject(HttpClient);
 
   private _currentUser = signal<User | null>(

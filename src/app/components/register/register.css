@@ -1,0 +1,262 @@
+/* ============================================
+   REGISTER PAGE - COMPACT VERSION
+   Fits perfectly on screen without scrolling
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=Satoshi:wght@400;500;700&display=swap');
+
+:host {
+  /* --- Colors (Same as Login) --- */
+  --bg-page: #ffffff;             
+  --grid-line: rgba(0, 0, 0, 0.04); 
+  
+  --custom-gradient: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 50%, #d946ef 100%);
+  
+  --text-dark: rgba(10, 14, 26, 0.8);
+  --text-muted: rgba(10, 14, 26, 0.5);
+
+  --bg-card: #ffffff;             
+  --input-bg: #f8fafc;            
+  --border-color: #e2e8f0;
+
+  --font-display: 'Clash Display', sans-serif;
+  --font-body: 'Satoshi', sans-serif;
+
+  display: block;
+  height: 100vh;
+  width: 100%;
+}
+
+/* ================= CONTAINER ================= */
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-body);
+  background-color: var(--bg-page);
+  
+  /* Grid Pattern */
+  background-image: 
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* ================= SOFT GLOW BLOBS ================= */
+.background-shapes {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0; left: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.shape {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.6;
+}
+
+.shape-1 { background: #e9d5ff; width: 500px; height: 500px; top: 0%; left: 0%; }
+.shape-2 { background: #fbcfe8; width: 400px; height: 400px; bottom: -10%; right: -5%; }
+
+/* ================= COMPACT CARD ================= */
+.login-card {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 400px; /* קצת צר יותר */
+  
+  /* צמצמתי את ה-Padding כדי לחסוך מקום */
+  padding: 24px 32px; 
+  
+  background: var(--bg-card);
+  border-radius: 20px;
+  
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    0 0 0 1px rgba(0, 0, 0, 0.02);
+    
+  animation: slideUp 0.6s ease-out;
+
+  /* זה מבטיח שהכרטיס לא יברח מהמסך במחשבים ניידים קטנים */
+  max-height: 95vh;
+  overflow-y: auto; 
+  
+  /* עיצוב פס גלילה מוסתר/עדין */
+  scrollbar-width: thin;
+  scrollbar-color: #e2e8f0 transparent;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= COMPACT HEADER ================= */
+.card-header { text-align: center; margin-bottom: 16px; }
+
+.logo-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* הקטנתי את הלוגו כדי לחסוך מקום */
+  width: 50px; 
+  height: 50px;
+  
+  background: var(--custom-gradient);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 8px 16px rgba(139, 92, 246, 0.25);
+}
+
+.logo-icon { font-size: 24px; width: 24px; height: 24px; color: white; }
+
+.title { 
+  font-family: var(--font-display);
+  font-size: 24px; /* כותרת קטנה יותר */
+  margin: 0 0 4px 0; 
+  font-weight: 700;
+  color: var(--text-dark);
+}
+
+.subtitle { color: var(--text-muted); margin: 0; font-size: 13px; }
+
+/* ================= COMPACT FORM ================= */
+/* צמצום מרווחים בין שדות */
+.login-form { display: flex; flex-direction: column; gap: 10px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+
+.input-label {
+  color: var(--text-dark);
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 4px;
+}
+
+/* ================= INPUT FIELDS ================= */
+.custom-field { width: 100%; }
+
+::ng-deep .custom-field .mat-mdc-text-field-wrapper {
+  background-color: var(--input-bg) !important;
+  border-radius: 10px !important;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+  /* הקטנת גובה השדה */
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  height: 42px; /* גובה קבוע נמוך יותר */
+  display: flex;
+  align-items: center;
+}
+
+::ng-deep .custom-field.mat-focused .mat-mdc-text-field-wrapper {
+  background-color: #ffffff !important;
+  border-color: #8b5cf6 !important;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+::ng-deep .custom-field .mdc-notched-outline__leading,
+::ng-deep .custom-field .mdc-notched-outline__notch,
+::ng-deep .custom-field .mdc-notched-outline__trailing {
+  border: none !important;
+}
+
+::ng-deep .custom-field .mat-mdc-input-element { 
+  color: var(--text-dark) !important; 
+  font-family: var(--font-body) !important;
+  font-weight: 500;
+  top: -4px; /* תיקון מיקום טקסט בגלל הגובה החדש */
+  position: relative;
+}
+
+::ng-deep .custom-field .mat-mdc-input-element::placeholder { color: var(--text-muted); font-size: 13px; }
+
+::ng-deep .custom-field .mat-mdc-form-field-icon-prefix {
+  padding: 0 8px 0 0;
+  color: var(--text-muted);
+  transform: scale(0.9); /* אייקונים קטנים יותר */
+}
+
+::ng-deep .custom-field .mat-mdc-form-field-icon-suffix {
+  transform: scale(0.9);
+}
+
+::ng-deep .custom-field.mat-focused .mat-mdc-form-field-icon-prefix {
+  color: #8b5cf6;
+}
+
+::ng-deep .mat-mdc-form-field-error {
+  color: #ef4444 !important;
+  font-size: 11px;
+  margin-top: 2px;
+}
+
+/* הסתרת מרווח תחתון מיותר של מטריאל */
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  height: auto;
+  min-height: 0;
+}
+
+/* ================= BUTTON ================= */
+.submit-btn {
+  height: 44px !important; /* כפתור נמוך יותר */
+  border-radius: 10px !important;
+  margin-top: 8px;
+  background: var(--custom-gradient) !important;
+  color: white !important;
+  font-family: var(--font-body) !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.25);
+  transition: all 0.3s ease;
+}
+
+.submit-btn:hover:not([disabled]) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(139, 92, 246, 0.35);
+}
+
+::ng-deep .button-spinner circle { stroke: white !important; }
+
+/* ================= FOOTER ================= */
+.divider {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+  margin: 12px 0; /* קצת יותר רווח */
+  position: relative;
+}
+.divider::before {
+  content: ''; position: absolute; top: 50%; left: 0; right: 0;
+  height: 1px; background: #e2e8f0; z-index: -1;
+}
+.divider span { background: var(--bg-card); padding: 0 12px; }
+
+.register-prompt { 
+  text-align: center; 
+  color: var(--text-muted); 
+  font-size: 13px; 
+  margin-bottom: 4px;
+}
+
+.register-prompt a {
+  color: #8b5cf6; 
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: color 0.2s;
+}
+
+.register-prompt a:hover {
+  color: #d946ef;
+  text-decoration: underline;
+}

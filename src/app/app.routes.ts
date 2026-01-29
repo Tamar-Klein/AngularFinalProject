@@ -12,13 +12,14 @@ import { MainLayout } from './layout/main-layout/main-layout';
 import { TaskBoard } from './components/Tasks/task-board/task-board';
 
 export const routes: Routes = [
+    { path: '', redirectTo: 'landingPage', pathMatch: 'full' },
     { path: 'login', component: Login },
     { path: 'register', component: Register },
     { path: 'landingPage', component: LandingPage },
     {
         path: '',
-        component: MainLayout, 
-        canActivate: [authGuard],       
+        component: MainLayout,
+        canActivate: [authGuard],
         children: [
             { path: 'teams', component: Teams },
             { path: 'projects', component: Projects },
@@ -27,7 +28,6 @@ export const routes: Routes = [
             { path: 'createTask', component: CreateTask },
             { path: 'projects/:projectId', component: ProjectDetails },
             { path: 'projects/:projectId/create-task', component: CreateTask },
-            { path: '', redirectTo: 'landingPage', pathMatch: 'full' } 
         ]
     },
 ];

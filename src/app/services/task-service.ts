@@ -8,7 +8,7 @@ import { map, Observable, tap } from 'rxjs';
 })
 export class TaskService {
 
-  private apiUrl = "http://localhost:3000/api/tasks";
+  private apiUrl = "https://tasks-teacher-server.onrender.com/api/tasks";
   private http = inject(HttpClient);
 
 

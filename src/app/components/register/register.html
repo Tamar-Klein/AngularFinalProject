@@ -1,53 +1,91 @@
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+<div class="login-container">
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
 
-    <div>
-        <label for="name"></label>
-        <input id="name" formControlName="name" placeholder="Name">
-        @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
-        <div class="error-message">
-            @if (userForm.get('name')?.hasError('required')) {
-            <span>This field is required</span>
-            }
-        </div>
-        }
-    </div>
-    <div>
-        <label for="email"></label>
-        <input id="email" formControlName="email" placeholder="Email">
-        @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
-        <div class="error-message">
-            @if (userForm.get('email')?.hasError('required')) {
-            <span>Please enter an email address</span>
-            }
-            @if (userForm.get('email')?.hasError('email')) {
-            <span>Email address is invalid</span>
-            }
-        </div>
-        }
-    </div>
-    <div>
-        <label for="password"></label>
-        <input id="password" type="password" formControlName="password" placeholder="Password">
-        @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
-        <div class="error-message">
-            @if (userForm.get('password')?.hasError('required')) {
-            <span>Password is required</span>
-            }
-            @if (userForm.get('password')?.hasError('minlength')) {
-            <span>Password must be at least 6 characters long</span>
-            }
-        </div>
-        }
+  <div class="login-card">
+    
+    <div class="card-header">
+      <div class="logo-wrapper">
+        <mat-icon class="logo-icon">person_add</mat-icon>
+      </div>
+      <h1 class="title">Create Account</h1>
+      <p class="subtitle">Join TaskPilot and boost your productivity.</p>
     </div>
 
-    <div>
-        <label for="confirmPassword"></label>
-        <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="Confirm Password">
-        @if (userForm.errors?.['passwordsNotMatch'] && userForm.get('confirmPassword')?.touched) {
-        <div class="error-message">
-            Passwords do not match
-        </div>
+    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="login-form">
+      
+      <div class="form-group">
+        <label class="input-label">Full Name</label>
+        <mat-form-field appearance="outline" class="custom-field no-label-float">
+          <input matInput formControlName="name" placeholder="John Doe" autocomplete="name">
+          <mat-icon matPrefix>badge</mat-icon>
+          @if (userForm.get('name')?.invalid && userForm.get('name')?.touched) {
+            <mat-error>{{ getNameError() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label class="input-label">Email Address</label>
+        <mat-form-field appearance="outline" class="custom-field no-label-float">
+          <input matInput type="email" formControlName="email" placeholder="name@company.com" autocomplete="email">
+          <mat-icon matPrefix>email</mat-icon>
+          @if (userForm.get('email')?.invalid && userForm.get('email')?.touched) {
+            <mat-error>{{ getEmailError() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label class="input-label">Password</label>
+        <mat-form-field appearance="outline" class="custom-field no-label-float">
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" placeholder="Create a password" autocomplete="new-password">
+          <mat-icon matPrefix>lock</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          @if (userForm.get('password')?.invalid && userForm.get('password')?.touched) {
+            <mat-error>{{ getPasswordError() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="form-group">
+        <label class="input-label">Confirm Password</label>
+        <mat-form-field appearance="outline" class="custom-field no-label-float">
+          <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" placeholder="Repeat your password" autocomplete="new-password">
+          <mat-icon matPrefix>lock_reset</mat-icon>
+          <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
+            <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          
+          @if (userForm.errors?.['passwordsNotMatch'] && userForm.get('confirmPassword')?.touched) {
+            <mat-error>Passwords do not match</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <button mat-flat-button type="submit" class="submit-btn" [disabled]="userForm.invalid || isLoading">
+        @if (isLoading) {
+          <mat-spinner diameter="24" class="button-spinner"></mat-spinner>
+        } @else {
+          <span>Sign Up</span>
+          <mat-icon iconPositionEnd>arrow_forward</mat-icon>
         }
-    </div>
-    <button type="submit" [disabled]="userForm.invalid">Register</button>
-</form>
+      </button>
+
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <div class="register-prompt">
+        <span>Already have an account?</span>
+        <a routerLink="/login">Sign In</a>
+      </div>
+
+    </form>
+  </div>
+</div>
