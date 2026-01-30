@@ -70,7 +70,7 @@ export class Register {
             panelClass: ['success-snackbar'],
             verticalPosition: 'top'
           });
-          this.router.navigate(['/projects']);
+          this.router.navigate(['/teams']);
         },
         error: (err) => {
           this.isLoading = false;

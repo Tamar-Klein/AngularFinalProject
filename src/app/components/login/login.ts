@@ -1,47 +1,3 @@
-// import { Component, inject } from '@angular/core';
-// import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-// import { AuthService } from '../../services/auth-service';
-// import { Router, RouterLink } from '@angular/router';
-
-// @Component({
-//   selector: 'login',
-//   imports: [ReactiveFormsModule, RouterLink],
-//   templateUrl: './login.html',
-//   styleUrl: './login.css',
-// })
-// export class Login {
-// private fb = inject(FormBuilder);
-//   private authService = inject(AuthService);
-//   private router = inject(Router);
-
-//   loginForm = this.fb.nonNullable.group({
-//     email: ['', [Validators.required]],
-//     password: ['', [Validators.required]],
-//   });
-
-//    errorMsg :string='';
-
-
-//   onSubmit() {
-//     if (this.loginForm.valid) {
-//      this.authService.login(this.loginForm.getRawValue()).subscribe({
-
-//         next: (response) => {
-//           alert(`You connected successfully ${response.user.name}`);
-//             this.router.navigate(['/projects']);
-//         },
-//         error: (err) => {
-//         this.errorMsg = err.error?.message || 'There was an error during login.';
-//         alert('Error during login: ' + this.errorMsg);
-//         }
-//       });
-
-//   }
-
-// }
-// }
-
-
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth-service';
@@ -104,7 +60,7 @@ export class Login {
               panelClass: ['success-snackbar']
             }
           );
-          this.router.navigate(['/dashboard']);
+          this.router.navigate(['/teams']);
         },
         error: (err) => {
           this.isLoading = false;
